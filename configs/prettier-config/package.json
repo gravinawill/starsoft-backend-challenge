@@ -1,0 +1,36 @@
+{
+  "name": "@niki/prettier-config",
+  "version": "0.0.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "check:lint": "eslint . --max-warnings 0",
+    "check:types": "tsc --noEmit --pretty",
+    "clean": "rm -rf .turbo dist",
+    "dev": "tsdown --watch",
+    "fix:lint": "eslint --fix ."
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
+  },
+  "devDependencies": {
+    "@niki/eslint-config": "workspace:*",
+    "@niki/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "prettier": "^3.6.2",
+    "prettier-plugin-packagejson": "^2.5.19",
+    "prettier-plugin-prisma": "^5.0.0",
+    "tsdown": "^0.14.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

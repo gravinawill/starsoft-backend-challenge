@@ -1,0 +1,5 @@
+{
+  "exclude": ["node_modules", "apps/**", "packages/**"],
+  "extends": "@niki/typescript-config/base.json",
+  "include": ["**/*.ts", "prettier.config.js"]
+}

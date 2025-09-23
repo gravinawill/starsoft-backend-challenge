@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "allowCompoundWords": true,
+  "dictionaries": [
+    "software-terms",
+    "npm",
+    "fullstack",
+    "redis",
+    "typescript",
+    "softwareTerms",
+    "node",
+    "en_us",
+    "en-gb",
+    "html",
+    "companies",
+    "misc",
+    "filetypes",
+    "bash",
+    "lorem-ipsum",
+    "es-es"
+  ],
+  "files": ["**", ".vscode/**", ".github/**"],
+  "ignorePaths": ["pnpm-lock.yaml", ".pnpm-store/", "*.sql", "dist/**", "build/**", "_trash", "README.md"],
+  "import": [
+    "@cspell/dict-redis/cspell-ext.json",
+    "@cspell/dict-typescript",
+    "@cspell/dict-software-terms",
+    "@cspell/dict-node",
+    "@cspell/dict-en_us",
+    "@cspell/dict-en-gb",
+    "@cspell/dict-npm",
+    "@cspell/dict-html",
+    "@cspell/dict-companies",
+    "@cspell/dict-filetypes",
+    "@cspell/dict-bash",
+    "@cspell/dict-lorem-ipsum/cspell-ext.json",
+    "@cspell/dict-es-es/cspell-ext.json"
+  ],
+  "language": "en",
+  "useGitignore": true,
+  "version": "0.2",
+  "words": ["dotenvx", "niki", "sonarjs"]
+}

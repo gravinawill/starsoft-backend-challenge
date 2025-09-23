@@ -25,7 +25,6 @@ Você foi designado para desenvolver um sistema de gerenciamento de pedidos para
 ### Requisitos
 
 1. **Configuração do Ambiente**
-
    - Configure um ambiente de desenvolvimento utilizando **Docker** e **Docker-compose**, incluindo:
      - Aplicação Node.js com **Nest.js**.
      - Banco de dados **PostgreSQL**.
@@ -34,21 +33,18 @@ Você foi designado para desenvolver um sistema de gerenciamento de pedidos para
    - A aplicação deve ser iniciada com um único comando (`docker-compose up`).
 
 2. **API RESTful**
-
    - Implemente uma API RESTful para gerenciamento de pedidos.
    - Utilize **Nest.js** seguindo as melhores práticas para estruturação de módulos, controladores e serviços.
    - Utilize **TypeORM** para interação com o banco de dados **PostgreSQL**.
    - Assegure-se de que as operações de CRUD (Create, Read, Update, Delete) estão implementadas.
 
 3. **Comunicação via Kafka**
-
    - Implemente a publicação de eventos em **Kafka**:
      - Ao criar um novo pedido, publique um evento `order_created`.
      - Ao atualizar o status de um pedido, publique um evento `order_status_updated`.
      - Os eventos devem conter informações relevantes em formato JSON.
 
 4. **Integração com Elasticsearch**
-
    - Implemente a indexação dos pedidos no **Elasticsearch**:
      - Ao criar ou atualizar um pedido, sincronize os dados com o Elasticsearch.
    - Implemente endpoints na API que permitam a busca e filtragem de pedidos utilizando as capacidades de pesquisa do Elasticsearch.
@@ -59,35 +55,29 @@ Você foi designado para desenvolver um sistema de gerenciamento de pedidos para
      - Itens contidos no pedido.
 
 5. **Clean Code e Boas Práticas**
-
    - Aplique os princípios de **Clean Code** em toda a sua implementação.
    - Utilize um padrão de código consistente e configure **ESLint** e **Prettier** no projeto.
    - Documente o código quando necessário para melhorar a legibilidade.
 
 6. **Dockerização**
-
    - Certifique-se de que a aplicação e todos os serviços necessários estejam corretamente containerizados.
    - Utilize **Docker-compose** para orquestrar os contêineres.
 
 7. **Testes**
-
    - Escreva testes unitários e/ou de integração para as principais funcionalidades da aplicação utilizando **Jest** (test runner padrão do Nest.js).
    - Os testes devem cobrir, no mínimo, os serviços e controladores.
 
 8. **Documentação da API**
-
    - Forneça documentação da API utilizando **Swagger** (integrado ao Nest.js).
    - A documentação deve estar acessível através de uma rota, por exemplo, `/api-docs`.
 
 9. **Logs e Monitoramento**
-
    - Implemente logs estruturados utilizando um middleware ou interceptador do Nest.js.
    - Registre informações importantes como erros, acessos às rotas e eventos de negócio.
 
 ### Diferenciais (Desejável)
 
 - **Monitoramento e Logging Avançado**
-
   - Implemente ferramentas de monitoramento como **Prometheus** e **Grafana**.
   - Configure logs centralizados utilizando **Elastic Stack** (ELK).
 
@@ -120,4 +110,3 @@ Os seguintes aspectos serão considerados na avaliação:
 ---
 
 Boa sorte! Estamos ansiosos para conhecer o seu trabalho e potencial.
-
