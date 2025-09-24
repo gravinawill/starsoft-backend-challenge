@@ -6,8 +6,8 @@ export class InvalidPasswordFormatError {
   public readonly name: 'InvalidPasswordFormatError'
   public readonly errorValue: unknown
 
-  constructor(parameters: { decryptedPassword: string }) {
-    this.errorMessage = `The password ${parameters.decryptedPassword} is invalid`
+  constructor() {
+    this.errorMessage = `The password is invalid format`
     this.errorValue = null
     this.name = 'InvalidPasswordFormatError'
     this.status = StatusError.INVALID
