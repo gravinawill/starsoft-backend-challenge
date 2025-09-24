@@ -25,7 +25,7 @@ export namespace SignUpUserUseCaseDTO {
       name: string
       email: string
       password: string
-      roles: string[]
+      role: string
     }
   }>
 
@@ -41,7 +41,7 @@ export namespace SignUpUserUseCaseDTO {
     | GenerateIDError
   >
   export type ResultSuccess = Readonly<{
-    userCreated: Pick<User, 'id' | 'name' | 'email' | 'roles' | 'createdAt' | 'updatedAt' | 'deletedAt'>
+    userCreated: Pick<User, 'id' | 'name' | 'email' | 'role' | 'createdAt' | 'updatedAt' | 'deletedAt'>
   }>
 
   export type Result = Promise<Either<ResultFailure, ResultSuccess>>
@@ -61,9 +61,9 @@ export class SignUpUserUseCase extends UseCase<
   }
 
   protected async performOperation(parameters: SignUpUserUseCaseDTO.Parameters): SignUpUserUseCaseDTO.Result {
-    const resultValidateRoles = User.validateRoles({ roles: parameters.user.roles, user: null })
+    const resultValidateRoles = User.validateRole({ role: parameters.user.role, user: null })
     if (resultValidateRoles.isFailure()) return failure(resultValidateRoles.value)
-    const { rolesValidated } = resultValidateRoles.value
+    const { roleValidated } = resultValidateRoles.value
 
     const resultValidateUserName = User.validateName({ name: parameters.user.name, userID: null })
     if (resultValidateUserName.isFailure()) return failure(resultValidateUserName.value)
@@ -88,7 +88,7 @@ export class SignUpUserUseCase extends UseCase<
       name: nameValidated,
       email: emailValidated,
       password: passwordEncrypted,
-      roles: rolesValidated
+      role: roleValidated
     })
     if (resultCreateUser.isFailure()) return failure(resultCreateUser.value)
     const { userCreated } = resultCreateUser.value
@@ -101,7 +101,7 @@ export class SignUpUserUseCase extends UseCase<
         id: userCreated.id,
         name: userCreated.name,
         email: userCreated.email,
-        roles: userCreated.roles,
+        role: userCreated.role,
         createdAt: userCreated.createdAt,
         updatedAt: userCreated.updatedAt,
         deletedAt: userCreated.deletedAt

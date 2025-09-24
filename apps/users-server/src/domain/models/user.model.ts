@@ -14,7 +14,7 @@ export class User {
   public name: string
   public email: Email
   public password: Password
-  public roles: UserRole[]
+  public role: UserRole
   public readonly createdAt: Date
   public updatedAt: Date
   public deletedAt: Date | null
@@ -24,7 +24,7 @@ export class User {
     name: string
     email: Email
     password: Password
-    roles: UserRole[]
+    role: UserRole
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -33,7 +33,7 @@ export class User {
     this.name = parameters.name
     this.email = parameters.email
     this.password = parameters.password
-    this.roles = parameters.roles
+    this.role = parameters.role
     this.createdAt = parameters.createdAt
     this.updatedAt = parameters.updatedAt
     this.deletedAt = parameters.deletedAt
@@ -43,7 +43,7 @@ export class User {
     name: string
     email: Email
     password: Password
-    roles: UserRole[]
+    role: UserRole
   }): Either<GenerateIDError, { userCreated: User }> {
     const resultGenerateID = ID.generate({ modelName: ModelName.USER })
     if (resultGenerateID.isFailure()) return failure(resultGenerateID.value)
@@ -57,7 +57,7 @@ export class User {
         name: parameters.name,
         email: parameters.email,
         password: parameters.password,
-        roles: parameters.roles,
+        role: parameters.role,
         createdAt: now,
         updatedAt: now,
         deletedAt: null
@@ -75,28 +75,24 @@ export class User {
     return success({ nameValidated: parameters.name })
   }
 
-  public static validateRoles(parameters: {
-    roles: string[]
+  public static validateRole(parameters: {
+    role: string
     user: Pick<User, 'id'> | null
-  }): Either<InvalidUserRoleError, { rolesValidated: UserRole[] }> {
+  }): Either<InvalidUserRoleError, { roleValidated: UserRole }> {
     const roleMap = new Map<string, UserRole>()
     for (const role of Object.values(UserRole)) {
       roleMap.set(role.toLowerCase(), role)
     }
-    const rolesValidated: UserRole[] = []
-    for (const inputRole of parameters.roles) {
-      const lowercasedRole = inputRole.toLowerCase()
-      const mappedRole = roleMap.get(lowercasedRole)
-      if (mappedRole === undefined) {
-        return failure(
-          new InvalidUserRoleError({
-            role: lowercasedRole,
-            userID: parameters.user?.id ?? null
-          })
-        )
-      }
-      rolesValidated.push(mappedRole)
+    const lowercasedRole = parameters.role.toLowerCase()
+    const mappedRole = roleMap.get(lowercasedRole)
+    if (mappedRole === undefined) {
+      return failure(
+        new InvalidUserRoleError({
+          role: lowercasedRole,
+          userID: parameters.user?.id ?? null
+        })
+      )
     }
-    return success({ rolesValidated })
+    return success({ roleValidated: mappedRole })
   }
 }
