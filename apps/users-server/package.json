@@ -9,6 +9,10 @@
     "fix:lint": "eslint --fix ."
   },
   "dependencies": {
+    "@niki/crypto": "workspace:*",
+    "@niki/domain": "workspace:*",
+    "@niki/logger": "workspace:*",
+    "@niki/token": "workspace:*",
     "@niki/utils": "workspace:*"
   },
   "devDependencies": {
