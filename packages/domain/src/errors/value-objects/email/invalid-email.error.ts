@@ -8,7 +8,7 @@ export class InvalidEmailError {
 
   constructor(parameters: { email: string }) {
     this.errorMessage = `The email ${parameters.email} is invalid`
-    this.errorValue = null
+    this.errorValue = { email: parameters.email }
     this.name = 'InvalidEmailError'
     this.status = StatusError.INVALID
   }
