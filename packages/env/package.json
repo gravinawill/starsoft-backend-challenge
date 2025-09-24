@@ -1,20 +1,21 @@
 {
-  "name": "@niki/users-server",
+  "name": "@niki/env",
   "version": "0.0.0",
   "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "check:lint": "eslint . --max-warnings 0",
     "check:types": "tsc --noEmit --pretty",
     "clean": "rm -rf .turbo node_modules dist",
     "fix:lint": "eslint --fix ."
   },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
+  },
   "dependencies": {
-    "@niki/crypto": "workspace:*",
-    "@niki/domain": "workspace:*",
-    "@niki/env": "workspace:*",
-    "@niki/logger": "workspace:*",
-    "@niki/token": "workspace:*",
-    "@niki/utils": "workspace:*"
+    "@t3-oss/env-core": "^0.13.8",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@niki/eslint-config": "workspace:*",
