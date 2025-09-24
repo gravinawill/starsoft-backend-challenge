@@ -74,7 +74,7 @@ export class Email {
     const resultValidateEmailAddress = Email.validateEmail({ email: parameters.email, isVerified: false })
     if (resultValidateEmailAddress.isFailure()) return failure(resultValidateEmailAddress.value)
     const { emailValidated } = resultValidateEmailAddress.value
-    return success({ emailCreated: new Email({ email: emailValidated.value, isVerified: false }) })
+    return success({ emailCreated: emailValidated })
   }
 
   public equals(parameters: { emailToCompare: Pick<Email, 'value'> }): boolean {

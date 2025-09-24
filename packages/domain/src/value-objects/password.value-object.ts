@@ -19,15 +19,9 @@ export class Password {
     password: string
   }): Either<InvalidPasswordFormatError, { passwordValidated: Password }> {
     const passwordFormatted = parameters.password.trim()
-    if (passwordFormatted.split(' ').length > 1) {
-      return failure(new InvalidPasswordFormatError({ decryptedPassword: passwordFormatted }))
-    }
-    if (passwordFormatted.length < 8) {
-      return failure(new InvalidPasswordFormatError({ decryptedPassword: passwordFormatted }))
-    }
-    if (passwordFormatted.length > 32) {
-      return failure(new InvalidPasswordFormatError({ decryptedPassword: passwordFormatted }))
-    }
+    if (passwordFormatted.split(' ').length > 1) return failure(new InvalidPasswordFormatError())
+    if (passwordFormatted.length < 8) return failure(new InvalidPasswordFormatError())
+    if (passwordFormatted.length > 32) return failure(new InvalidPasswordFormatError())
     return success({ passwordValidated: new Password({ password: passwordFormatted, isEncrypted: false }) })
   }
 
@@ -55,11 +49,10 @@ export class Password {
     } else {
       password = parameters.password
     }
-    if (!password) return failure(new InvalidPasswordFormatError({ decryptedPassword: password }))
     const resultValidateDecryptedPassword = Password.validateDecryptedPassword({ password })
     if (resultValidateDecryptedPassword.isFailure()) return failure(resultValidateDecryptedPassword.value)
     const { passwordValidated } = resultValidateDecryptedPassword.value
-    return success({ passwordCreated: new Password({ isEncrypted: false, password: passwordValidated.value }) })
+    return success({ passwordCreated: passwordValidated })
   }
 
   public static generateForgotPasswordToken(): { forgotPasswordTokenGenerated: string } {
