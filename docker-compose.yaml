@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: niki-postgres
+    image: 'bitnami/postgresql:latest' # TODO: change to the latest version to avoid security issues
+    volumes:
+      - './.docker/pg_data:/bitnami/postgresql'
+    environment:
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRESQL_USERNAME: ${POSTGRES_USER}
+      POSTGRESQL_DATABASE: ${POSTGRES_DB}
+      POSTGRESQL_TIMEZONE: America/SAO_PAULO # TODO: change to the timezone of the project
+    ports:
+      - '${POSTGRES_PORT}:5432'
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U ${POSTGRES_USER}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
