@@ -1,0 +1,20 @@
+{
+  "name": "@niki/users-server",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "check:lint": "eslint . --max-warnings 0",
+    "check:types": "tsc --noEmit --pretty",
+    "clean": "rm -rf .turbo node_modules dist",
+    "fix:lint": "eslint --fix ."
+  },
+  "dependencies": {
+    "@niki/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@niki/eslint-config": "workspace:*",
+    "@niki/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
