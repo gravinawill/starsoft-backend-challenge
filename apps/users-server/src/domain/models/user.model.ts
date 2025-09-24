@@ -14,7 +14,6 @@ export class User {
   public name: string
   public email: Email
   public password: Password
-  public avatarUrl: string | null
   public roles: UserRole[]
   public readonly createdAt: Date
   public updatedAt: Date
@@ -25,7 +24,6 @@ export class User {
     name: string
     email: Email
     password: Password
-    avatarUrl: string | null
     roles: UserRole[]
     createdAt: Date
     updatedAt: Date
@@ -35,7 +33,6 @@ export class User {
     this.name = parameters.name
     this.email = parameters.email
     this.password = parameters.password
-    this.avatarUrl = parameters.avatarUrl
     this.roles = parameters.roles
     this.createdAt = parameters.createdAt
     this.updatedAt = parameters.updatedAt
@@ -60,7 +57,6 @@ export class User {
         name: parameters.name,
         email: parameters.email,
         password: parameters.password,
-        avatarUrl: null,
         roles: parameters.roles,
         createdAt: now,
         updatedAt: now,
@@ -83,24 +79,24 @@ export class User {
     roles: string[]
     user: Pick<User, 'id'> | null
   }): Either<InvalidUserRoleError, { rolesValidated: UserRole[] }> {
-    const validRoles = Object.values(UserRole).map((role) => role.toLowerCase())
-    const inputRoles = parameters.roles.map((role) => role.toLowerCase())
-
+    const roleMap = new Map<string, UserRole>()
+    for (const role of Object.values(UserRole)) {
+      roleMap.set(role.toLowerCase(), role)
+    }
     const rolesValidated: UserRole[] = []
-
-    for (const inputRole of inputRoles) {
-      const matchedIndex = validRoles.indexOf(inputRole)
-      if (matchedIndex === -1) {
+    for (const inputRole of parameters.roles) {
+      const lowercasedRole = inputRole.toLowerCase()
+      const mappedRole = roleMap.get(lowercasedRole)
+      if (mappedRole === undefined) {
         return failure(
           new InvalidUserRoleError({
-            role: inputRole,
+            role: lowercasedRole,
             userID: parameters.user?.id ?? null
           })
         )
       }
-      rolesValidated.push(Object.values(UserRole)[matchedIndex]!)
+      rolesValidated.push(mappedRole)
     }
-
     return success({ rolesValidated })
   }
 }

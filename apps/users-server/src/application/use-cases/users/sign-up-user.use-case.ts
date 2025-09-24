@@ -41,7 +41,7 @@ export namespace SignUpUserUseCaseDTO {
     | GenerateIDError
   >
   export type ResultSuccess = Readonly<{
-    userCreated: Pick<User, 'id' | 'name' | 'email' | 'avatarUrl' | 'roles' | 'createdAt' | 'updatedAt' | 'deletedAt'>
+    userCreated: Pick<User, 'id' | 'name' | 'email' | 'roles' | 'createdAt' | 'updatedAt' | 'deletedAt'>
   }>
 
   export type Result = Promise<Either<ResultFailure, ResultSuccess>>
@@ -101,7 +101,6 @@ export class SignUpUserUseCase extends UseCase<
         id: userCreated.id,
         name: userCreated.name,
         email: userCreated.email,
-        avatarUrl: userCreated.avatarUrl,
         roles: userCreated.roles,
         createdAt: userCreated.createdAt,
         updatedAt: userCreated.updatedAt,

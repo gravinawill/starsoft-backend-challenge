@@ -15,7 +15,6 @@ import {
   UseCase
 } from '@niki/domain'
 import { type Either, failure, success } from '@niki/utils'
-import { type ISaveUsersRepository } from '@repository-contracts/users/save.users-repository'
 import { type IValidateEmailUsersRepository } from '@repository-contracts/users/validate-email.users-repository'
 
 export namespace SignInWithEmailAndPasswordUseCaseDTO {
@@ -42,7 +41,7 @@ export class SignInWithEmailAndPasswordUseCase extends UseCase<
 > {
   constructor(
     loggerProvider: ISendLogTimeUseCaseLoggerProvider & ISendLogErrorLoggerProvider,
-    private readonly usersRepository: IValidateEmailUsersRepository & ISaveUsersRepository,
+    private readonly usersRepository: IValidateEmailUsersRepository,
     private readonly cryptoProvider: ICompareEncryptedPasswordCryptoProvider,
     private readonly tokenProvider: IGenerateJWTTokenProvider
   ) {
