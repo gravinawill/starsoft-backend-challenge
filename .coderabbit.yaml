@@ -65,7 +65,6 @@ reviews:
 
     # Ignore Turborepo specific files
     - '!**/.turbo/**'
-    - '!**/turbo.json'
 
     # Ignore Crowdin and translation build files
     - '!**/crowdin.yml'
@@ -542,6 +541,11 @@ reviews:
 
 knowledge_base:
   opt_out: false
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - '**/.cursorrules'
+      - '.github/instructions/*.md'
   learnings:
     scope: 'auto'
   pull_requests:
