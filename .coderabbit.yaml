@@ -1,0 +1,603 @@
+language: pt-BR
+
+early_access: true
+
+reviews:
+  auto_title_instructions: 'Analyze code changes and provide a concise summary focusing on main modifications, potential impacts, and concerns that need attention.'
+  profile: 'assertive'
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  commit_status: true
+  suggested_reviewers: true
+  assess_linked_issues: true
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: true
+    base_branches:
+      - 'master'
+      - 'main'
+      - 'develop'
+      - 'staging'
+
+  poem: true
+  collapse_walkthrough: true
+  sequence_diagrams: true
+  changed_files_summary: true
+
+  path_filters:
+    # Ignore binary and media files
+    - '!**/*.{svg,png,jpg,jpeg,gif,ico,webp,pdf,mp4,mov,avi,woff,woff2,ttf,eot}'
+
+    # Ignore build outputs and dependencies
+    - '!**/{dist,build,coverage,node_modules,.turbo,out}/**'
+    - '!**/*.lock'
+    - '!**/pnpm-lock.yaml'
+    - '!**/yarn.lock'
+    - '!**/package-lock.json'
+
+    # Ignore cache and temporary files
+    - '!**/{logs,temp,.cache,.swc,.vercel,.netlify,tmp}/**'
+    - '!**/*.generated.*'
+    - '!**/*.gen.*'
+    - '!**/.env.local'
+    - '!**/.env.production'
+    - '!**/.env.development'
+
+    # Ignore database and migration files
+    - '!packages/db/prisma/migrations/**'
+    - '!**/prisma/migrations/**'
+    - '!**/*.sqlite'
+    - '!**/*.db'
+    - '!**/prisma/seed.ts'
+
+    # Ignore Storybook build outputs
+    - '!**/storybook-static/**'
+    - '!**/.storybook/main.js'
+
+    # Ignore test outputs and reports
+    - '!**/coverage/**'
+    - '!**/test-results/**'
+    - '!**/playwright-report/**'
+    - '!**/lighthouse-reports/**'
+    - '!**/*.lighthouse.json'
+
+    # Ignore Turborepo specific files
+    - '!**/.turbo/**'
+
+    # Ignore Crowdin and translation build files
+    - '!**/crowdin.yml'
+    - '!**/translations/**/*.json'
+
+    # Ignore Checkly generated files
+    - '!**/__checks__/generated/**'
+
+  tools:
+    # Core linting and formatting
+    eslint:
+      enabled: true
+    markdownlint:
+      enabled: true
+
+    # Security and vulnerability scanning
+    actionlint:
+      enabled: true
+    checkov:
+      enabled: true
+    gitleaks:
+      enabled: true
+    hadolint:
+      enabled: true
+
+    # Code quality and analysis
+    github-checks:
+      enabled: true
+      timeout_ms: 120000
+    oxc:
+      enabled: true
+
+    # Database and schema validation
+    prismaLint:
+      enabled: true
+
+    # Shell scripting
+    shellcheck:
+      enabled: true
+
+    # YAML validation
+    yamllint:
+      enabled: true
+
+  related_issues: true
+  related_prs: true
+
+  path_instructions:
+    # Turborepo configuration
+    - path: 'turbo.json'
+      instructions: |
+        Review checklist for Turborepo Configuration:
+        1. Review Tone
+           - Be specific about pipeline configurations and task dependencies
+           - Suggest performance optimizations for build caching
+           - Validate task ordering and parallel execution strategies
+           - Ensure proper workspace filtering and scoping
+
+        2. Pipeline Configuration
+           - Verify correct task dependencies (build -> test -> lint)
+           - Check cache configuration with proper inputs and outputs
+           - Validate workspace filtering patterns
+           - Ensure proper environment variable handling
+           - Check for optimal parallelization strategies
+
+        3. Cache Optimization
+           - Verify cache keys include all relevant inputs
+           - Check output patterns are comprehensive
+           - Validate remote cache configuration if applicable
+           - Ensure proper cache invalidation strategies
+
+    # Package.json configurations
+    - path: '**/package.json'
+      instructions: |
+        Review checklist for Package.json in Turborepo:
+        1. Dependencies
+           - Check for consistent versions across workspace
+           - Validate peer dependencies are correctly specified
+           - Ensure dev dependencies are properly categorized
+           - Check for unnecessary dependencies
+
+        2. Scripts
+           - Verify Turborepo commands use proper filtering
+           - Validate script naming conventions
+           - Ensure proper workspace script chaining
+
+        3. Workspace Configuration
+           - Validate workspace references and dependencies
+           - Check for proper monorepo structure adherence
+           - Ensure consistent naming conventions
+
+    - path: '**/*{-api,-server}/**/*.ts'
+      instructions: |
+        Review checklist for NestJS + Fastify Backend:
+        1. Review Tone
+           - Be specific: Reference the exact line, file, or code pattern.
+           - Be constructive: Suggest improvements, don't just point out problems.
+           - Explain the why: Provide justifications or links to documentation/standards.
+           - Be concise but complete: Avoid vague comments like "fix this".
+           - Use examples: Show how to improve, not just what's wrong.
+           - Be respectful and professional.
+
+        2. NestJS Architecture Patterns
+           - Use proper module structure with @Module decorators
+           - Implement dependency injection with @Injectable decorators
+           - Use proper controller decorators (@Controller, @Get, @Post, etc.)
+           - Leverage NestJS guards, interceptors, and pipes appropriately
+           - Use proper service layer separation (controllers → services → repositories)
+           - Implement proper exception filters with @Catch decorators
+           - Use NestJS middleware and lifecycle hooks correctly
+           - Follow NestJS naming conventions (*.module.ts, *.service.ts, *.controller.ts)
+
+        3. Fastify Integration
+           - Use @nestjs/platform-fastify for optimal performance
+           - Leverage Fastify's schema validation with @fastify/ajv-compiler
+           - Use Fastify plugins appropriately within NestJS context
+           - Implement proper Fastify-specific middleware patterns
+           - Optimize Fastify serialization for JSON responses
+           - Use Fastify's built-in validation and serialization features
+           - Configure Fastify logging integration with NestJS
+
+        4. Performance & Optimization
+           - Leverage Node.js native performance optimizations
+           - Use proper async/await patterns in services
+           - Implement proper caching strategies (Redis, in-memory)
+           - Avoid blocking operations in request handlers
+           - Use connection pooling for database connections
+           - Implement proper streaming for large data responses
+           - Optimize database queries and use proper indexing
+
+        5. Functional Programming with Either
+           - Use Either pattern for error handling instead of throwing exceptions
+           - Implement proper Result types for service methods
+           - Chain operations using map, flatMap, and fold operations
+           - Use Either.left for errors and Either.right for success cases
+           - Avoid nested try-catch blocks by using functional error handling
+           - Use fp-ts or similar libraries for functional utilities
+
+        6. Security
+           - Implement strict input validation using class-validator and DTOs
+           - Configure CORS appropriately for API endpoints
+           - Use rate limiting with @nestjs/throttler
+           - Sanitize and validate all user inputs
+           - Implement proper authentication with Passport.js strategies
+           - Use HTTPS in production and secure headers
+           - Validate file uploads and implement size limits
+           - Use proper JWT token validation and refresh strategies
+
+        7. Code Quality
+           - Use consistent error response formats
+           - Implement proper logging with NestJS Logger service
+           - Use OpenAPI/Swagger documentation with @nestjs/swagger
+           - Follow consistent naming conventions for modules, services, controllers
+           - Implement proper testing with NestJS testing utilities
+           - Use environment-based configuration with @nestjs/config
+
+    # Docker Configuration
+    - path: '**/Dockerfile*'
+      instructions: |
+        Review checklist for Docker Configuration:
+        1. Review Tone
+           - Be specific: Reference the exact line, file, or code pattern.
+           - Be constructive: Suggest improvements, don't just point out problems.
+           - Explain the why: Provide justifications or links to documentation/standards.
+           - Be concise but complete: Avoid vague comments like "fix this".
+           - Use examples: Show how to improve, not just what's wrong.
+           - Be respectful and professional.
+
+        2. Docker Best Practices
+           - Use official Node.js LTS Alpine images for smaller size
+           - Implement multi-stage builds for production optimization
+           - Use proper .dockerignore to exclude unnecessary files
+           - Set appropriate USER directive to avoid running as root
+           - Use COPY instead of ADD unless specific features are needed
+           - Leverage Docker layer caching by ordering commands properly
+           - Use specific versions instead of latest tags for reproducibility
+
+        3. Security
+           - Run containers with non-root user
+           - Use minimal base images (Alpine variants when possible)
+           - Regularly update base images for security patches
+           - Scan images for vulnerabilities using security tools
+           - Avoid storing secrets in Docker images
+           - Use proper health checks for container monitoring
+
+        4. Performance
+           - Optimize layer caching by copying package.json first
+           - Use npm ci instead of npm install for production
+           - Clean up package manager cache to reduce image size
+           - Use proper memory and CPU limits in runtime
+           - Implement proper logging configuration for containers
+
+    # Docker Compose Configuration
+    - path: '**/docker-compose*.{yml,yaml}'
+      instructions: |
+        Review checklist for Docker Compose:
+        1. Service Configuration
+           - Use proper service naming conventions
+           - Configure appropriate restart policies
+           - Set proper resource limits (memory, CPU)
+           - Use health checks for service monitoring
+           - Configure proper logging drivers and options
+
+        2. Networking
+           - Use custom networks instead of default bridge
+           - Implement proper service discovery patterns
+           - Configure appropriate port mappings
+           - Use internal networks for service-to-service communication
+
+        3. Data Management
+           - Use named volumes for persistent data
+           - Configure proper volume mount points
+           - Implement backup strategies for data volumes
+           - Use proper file permissions for mounted volumes
+
+        4. Environment Management
+           - Use environment-specific compose files
+           - Configure proper environment variable management
+           - Use secrets management for sensitive data
+           - Implement proper configuration validation
+
+    # Kafka Configuration
+    - path: '**/*kafka*/**/*.{ts,js,json,yml,yaml}'
+      instructions: |
+        Review checklist for Kafka Configuration:
+        1. Review Tone
+           - Be specific: Reference the exact line, file, or code pattern.
+           - Be constructive: Suggest improvements, don't just point out problems.
+           - Explain the why: Provide justifications or links to documentation/standards.
+           - Be concise but complete: Avoid vague comments like "fix this".
+           - Use examples: Show how to improve, not just what's wrong.
+           - Be respectful and professional.
+
+        2. Producer Configuration
+           - Use proper serialization strategies (Avro, JSON Schema)
+           - Configure appropriate batch size and linger.ms for throughput
+           - Implement proper error handling and retry mechanisms
+           - Use idempotent producers for exactly-once semantics
+           - Configure proper acks setting for durability requirements
+           - Implement proper partitioning strategies
+
+        3. Consumer Configuration
+           - Use proper consumer group management
+           - Implement proper offset management strategies
+           - Configure appropriate session timeout and heartbeat intervals
+           - Use proper deserialization with schema validation
+           - Implement proper error handling and dead letter topics
+           - Use consumer group rebalancing strategies appropriately
+
+        4. Topic Management
+           - Use proper topic naming conventions
+           - Configure appropriate replication factor and partitions
+           - Set proper retention policies based on use case
+           - Implement proper topic configuration management
+           - Use schema registry for message format evolution
+
+        5. Performance & Monitoring
+           - Monitor consumer lag and throughput metrics
+           - Implement proper health checks for Kafka connectivity
+           - Use connection pooling for Kafka clients
+           - Configure proper timeout settings
+           - Implement backpressure handling for high-throughput scenarios
+
+    # Elasticsearch Configuration
+    - path: '**/*elastic*/**/*.{ts,js,json,yml,yaml}'
+      instructions: |
+        Review checklist for Elasticsearch Integration:
+        1. Index Management
+           - Use proper index naming conventions with versioning
+           - Configure appropriate mapping types for fields
+           - Implement proper index templates and policies
+           - Use proper analyzer configuration for search fields
+           - Configure index lifecycle management (ILM) policies
+
+        2. Query Optimization
+           - Use appropriate query types (match, bool, range, etc.)
+           - Implement proper aggregations for analytics
+           - Use proper filtering vs querying strategies
+           - Optimize query performance with proper field mappings
+           - Implement proper pagination with search_after
+
+        3. Client Configuration
+           - Use official Elasticsearch client for Node.js
+           - Configure proper connection pooling and retry logic
+           - Implement proper error handling for network issues
+           - Use bulk operations for multiple document operations
+           - Configure appropriate timeout settings
+
+        4. Security & Performance
+           - Implement proper authentication and authorization
+           - Use proper field-level security when needed
+           - Monitor cluster health and performance metrics
+           - Implement proper index optimization strategies
+           - Configure appropriate refresh intervals
+
+    # Prisma Database Layer
+    - path: '**/prisma/**/*.{ts,prisma}'
+      instructions: |
+        Review checklist for Prisma ORM:
+        1. Schema Design
+           - Use proper Prisma schema conventions and naming
+           - Implement appropriate database constraints and indexes
+           - Use proper field types and attributes
+           - Follow consistent naming conventions for models and fields
+           - Implement proper relations and foreign keys
+
+        2. Performance
+           - Use proper database indexes for query optimization
+           - Implement pagination patterns for large datasets
+           - Use select and include strategically to avoid N+1 queries
+           - Consider database-specific optimizations
+           - Use proper connection pooling configurations
+
+        3. Type Safety
+           - Generate proper Prisma client types
+           - Use Prisma's type-safe query building
+           - Implement proper error handling for database operations
+           - Use transaction patterns where appropriate
+           - Validate data integrity with Prisma validators
+
+        4. Migrations
+           - Write descriptive migration names and comments
+           - Test migrations in development before applying to production
+           - Consider backward compatibility in schema changes
+           - Use proper rollback strategies
+           - Document breaking changes in schema evolution
+
+    # Testing Files - Vitest Unit Tests
+    - path: '**/*.{test,spec}.{ts,tsx}'
+      instructions: |
+        Review checklist for Vitest Unit Testing:
+        1. Review Tone
+           - Be specific: Reference the exact line, file, or code pattern.
+           - Be constructive: Suggest improvements, don't just point out problems.
+           - Explain the why: Provide justifications or links to documentation/standards.
+           - Be concise but complete: Avoid vague comments like "fix this".
+           - Use examples: Show how to improve, not just what's wrong.
+           - Be respectful and professional.
+
+        2. Vitest Patterns
+           - Use descriptive test names that explain expected behavior
+           - Follow AAA pattern (Arrange, Act, Assert) in test structure
+           - Use proper TypeScript types for test functions and mocks
+           - Implement proper test isolation with beforeEach/afterEach hooks
+           - Use Vitest's built-in matchers and utilities (expect, vi.mock, etc.)
+           - Test both happy path and edge cases
+           - Use proper async/await patterns for asynchronous tests
+           - Mock external dependencies appropriately with vi.mock()
+
+        3. Integration Testing
+           - Test complete request-response cycles with supertest
+           - Use proper database seeding and cleanup in tests
+           - Mock external service dependencies (Kafka, Elasticsearch)
+           - Test different service layers integration
+           - Use proper test isolation with database transactions
+           - Test error scenarios and edge cases
+
+        4. Integration with Pnpm
+           - Leverage pnpm's efficient package management and workspace features
+           - Use proper workspace filtering for monorepo testing
+           - Optimize test configuration for Node.js runtime
+           - Use proper watch mode for development testing
+
+        5. Coverage and Quality
+           - Maintain high test coverage for critical business logic
+           - Use meaningful assertions with clear error messages
+           - Implement proper test data management and fixtures
+           - Use test.each() for parameterized tests
+           - Write tests that are independent and can run in any order
+
+    # API Integration Tests
+    - path: '**/__e2e__/**/*.{ts,js}'
+      instructions: |
+        Review checklist for API Integration Testing:
+        1. Test Structure
+           - Use proper test setup with database seeding and cleanup
+           - Implement proper API client patterns for different endpoints
+           - Use proper HTTP status code assertions
+           - Test with realistic data payloads and scenarios
+           - Use proper async/await patterns for API calls
+
+        2. Critical API Workflows
+           - Test complete business workflows through API calls
+           - Include authentication and authorization flows
+           - Test data validation and error responses
+           - Validate database state changes after operations
+           - Test inter-service communication (Kafka messaging)
+
+        3. Performance & Load Testing
+           - Test API response times under normal load
+           - Validate connection pooling and resource management
+           - Test proper error handling under high load
+           - Monitor database query performance during tests
+           - Test Elasticsearch indexing and search performance
+
+        4. External Integration Testing
+           - Test Kafka producer/consumer integration
+           - Validate Elasticsearch indexing and querying
+           - Test database transaction handling
+           - Include proper mocking for external services
+           - Test retry mechanisms and circuit breakers
+
+    # Configuration Files
+    - path: '**/{vitest,jest}.config.{ts,js}'
+      instructions: |
+        Review checklist for Test Configuration:
+        1. Configuration Completeness
+           - Ensure all necessary plugins and extensions are configured
+           - Validate proper test environment setup
+           - Configure proper database connection settings for tests
+           - Ensure proper reporter configurations for CI/CD
+           - Set up proper mock configurations for external services
+
+        2. Performance Optimization
+           - Configure parallel test execution appropriately
+           - Set proper timeouts for different test types (unit vs integration)
+           - Use efficient test discovery patterns
+           - Configure proper cleanup and teardown procedures
+           - Optimize test database operations and connection pooling
+
+    # Health Check and Monitoring
+    - path: '**/{health,monitor}/**/*.{ts,js}'
+      instructions: |
+        Review checklist for Health Checks and Monitoring:
+        1. Health Check Implementation
+           - Use NestJS health check module (@nestjs/terminus)
+           - Implement proper database connectivity checks
+           - Monitor Kafka broker connectivity and lag
+           - Check Elasticsearch cluster health
+           - Include memory and CPU usage metrics
+
+        2. Monitoring Configuration
+           - Set up proper logging with structured data
+           - Configure appropriate alert thresholds
+           - Monitor API response times and error rates
+           - Track business metrics and KPIs
+           - Implement proper observability with tracing
+
+    # Spell Check Configuration
+    - path: '**/cspell.{json,yaml,yml}'
+      instructions: |
+        Review checklist for CSpell Configuration:
+        1. Dictionary Management
+           - Include proper technical dictionaries for the project
+           - Configure project-specific word lists
+           - Set up proper ignore patterns for generated files
+           - Include proper language-specific dictionaries
+           - Configure proper case sensitivity rules
+
+        2. Integration
+           - Ensure proper CI/CD integration for spell checking
+           - Configure proper file type coverage
+           - Set up proper exclusion patterns for third-party code
+           - Include proper developer workflow integration
+           - Configure proper error reporting and suggestions
+
+    # Knip Dead Code Detection
+    - path: '**/knip.{json,ts}'
+      instructions: |
+        Review checklist for Knip Configuration:
+        1. Dead Code Detection
+           - Configure proper entry points for all applications
+           - Set up proper workspace detection for monorepo
+           - Configure ignore patterns for legitimate unused exports
+           - Set up proper plugin configurations for frameworks
+           - Configure proper dependency analysis settings
+
+        2. Maintenance
+           - Regularly review and clean up detected unused code
+           - Configure proper CI/CD integration for automated checks
+           - Set up proper reporting for code health metrics
+           - Include proper documentation for ignore patterns
+           - Configure proper team workflow for code cleanup
+
+knowledge_base:
+  opt_out: false
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - '**/.cursorrules'
+      - '.github/instructions/*.md'
+  learnings:
+    scope: 'auto'
+  pull_requests:
+    scope: 'auto'
+
+code_generation:
+  unit_tests:
+    path_instructions:
+      - path: '**/*.{ts,tsx}'
+        instructions: |
+          Review checklist for Unit Tests:
+          1. Review Tone
+             - Be specific: Reference the exact line, file, or code pattern.
+             - Be constructive: Suggest improvements, don't just point out problems.
+             - Explain the why: Provide justifications or links to documentation/standards.
+             - Be concise but complete: Avoid vague comments like "fix this".
+             - Use examples: Show how to improve, not just what's wrong.
+             - Be respectful and professional.
+
+          2. Vitest Patterns
+             - Use descriptive test names that explain expected behavior
+             - Follow AAA pattern (Arrange, Act, Assert) in test structure
+             - Use proper TypeScript types for test functions and mocks
+             - Implement proper test isolation with beforeEach/afterEach hooks
+             - Use Vitest's built-in matchers and utilities (expect, vi.mock, etc.)
+             - Test both happy path and edge cases
+             - Use proper async/await patterns for asynchronous tests
+             - Mock external dependencies appropriately with vi.mock()
+
+          3. Service and Integration Testing
+             - Test service layer methods with proper mocking
+             - Test database operations with proper transaction handling
+             - Use proper mocking for external service calls
+             - Test different input validation scenarios
+             - Mock Kafka producers/consumers and external APIs
+             - Test error handling and exception scenarios
+
+ignore_patterns:
+  - '**/node_modules/**'
+  - '**/dist/**'
+  - '**/build/**'
+  - '**/.turbo/**'
+  - '**/coverage/**'
+  - '**/test-results/**'
+  - '**/logs/**'
+  - '**/tmp/**'
+  - '**/temp/**'
+  - '**/*.log'
+
+# Performance optimizations for large monorepos
+performance:
+  max_files_per_review: 150
+  max_lines_per_file: 2000
+  timeout_minutes: 30
+  parallel_processing: true
