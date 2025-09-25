@@ -16,6 +16,7 @@
     "commit": "czg",
     "dev": "turbo run dev",
     "dev:apps": "turbo run dev --filter=./apps/*",
+    "fix": "turbo fix:lint && pnpm fix:format",
     "fix:format": "prettier --cache --write --list-different --ignore-path .gitignore --ignore-path .prettierignore .",
     "fix:lint": "turbo run fix:lint",
     "preinstall": "npx --yes only-allow pnpm",

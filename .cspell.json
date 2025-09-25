@@ -48,5 +48,19 @@
   "language": "en",
   "useGitignore": true,
   "version": "0.2",
-  "words": ["bitnami", "dotenvx", "isready", "kafkajs", "marcalexiei", "niki", "SASL", "sonarjs", "uuidv", "XVCJ"]
+  "words": [
+    "bitnami",
+    "dotenvx",
+    "imok",
+    "isready",
+    "kafkajs",
+    "marcalexiei",
+    "niki",
+    "provectuslabs",
+    "ruok",
+    "SASL",
+    "sonarjs",
+    "uuidv",
+    "XVCJ"
+  ]
 }
