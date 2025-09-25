@@ -2,6 +2,7 @@ import { type FastifyTypedInstance } from '@main/docs/openapi.docs'
 import { type ZodTypeProvider } from '@marcalexiei/fastify-type-provider-zod'
 import { usersServerENV } from '@niki/env'
 import { makeLoggerProvider } from '@niki/logger'
+import { MessageBrokerHealthCheck } from '@niki/message-broker'
 import { HTTP_STATUS_CODE } from '@niki/utils'
 
 import { version } from '../../../package.json'
@@ -24,9 +25,40 @@ export function healthRoutes(fastify: FastifyTypedInstance): void {
       }
     },
     async (_request, reply) => {
+      const logger = makeLoggerProvider()
+
       try {
+        const messageBrokerHealthCheck = MessageBrokerHealthCheck.getInstance({
+          environments: {
+            CLIENT_ID: usersServerENV.USERS_SERVER_KAFKA_CLIENT_ID,
+            BROKERS: [usersServerENV.USERS_SERVER_KAFKA_BROKER_URL],
+            GROUP_ID: usersServerENV.USERS_SERVER_KAFKA_GROUP_ID
+          },
+          timeoutMs: 5000
+        })
+
+        const kafkaHealthResult = await messageBrokerHealthCheck.checkProducerHealthOnly({
+          producer: {
+            brokers: [usersServerENV.USERS_SERVER_KAFKA_BROKER_URL],
+            clientID: usersServerENV.USERS_SERVER_KAFKA_CLIENT_ID
+          }
+        })
+
+        const isKafkaHealthy = kafkaHealthResult.status === 'healthy'
+        const serviceStatus = isKafkaHealthy ? 'ok' : 'not_ready'
+        const httpStatus = isKafkaHealthy ? HTTP_STATUS_CODE.OK : HTTP_STATUS_CODE.SERVICE_UNAVAILABLE
+
+        logger.sendLogInfo({
+          message: '🏥 Service health check completed',
+          data: {
+            serviceStatus,
+            kafkaStatus: kafkaHealthResult.status,
+            kafkaResponseTime: kafkaHealthResult.responseTimeMs
+          }
+        })
+
         const payload = {
-          status: 'ok',
+          status: serviceStatus,
           timestamp: new Date().toISOString(),
           uptime: process.uptime(),
           environment: usersServerENV.USERS_SERVER_ENVIRONMENT,
@@ -44,9 +76,9 @@ export function healthRoutes(fastify: FastifyTypedInstance): void {
           })
         }
 
-        return await reply.status(HTTP_STATUS_CODE.OK).send(response.data)
+        return await reply.status(httpStatus).send(response.data)
       } catch (error) {
-        makeLoggerProvider().sendLogError({
+        logger.sendLogError({
           message: 'Failed to check health',
           value: error
         })

@@ -1,7 +1,7 @@
 import { makeSignInUseCase } from '@factories/use-cases/users/sign-in.use-case.factory'
 import { makeSignUpUserUseCase } from '@factories/use-cases/users/sign-up-user-use-case.factory'
 import { type SignUpRequest, SignUpSuccessResponseSchema } from '@main/route-schemas/users/sign-up.schema'
-import { getHttpStatusCodeByStatusError } from '@niki/domain'
+import { getHttpStatusCodeByStatusError, UserRole } from '@niki/domain'
 import { usersServerENV } from '@niki/env'
 import { makeUsersProducerEvents } from '@niki/message-broker'
 import { HTTP_STATUS_CODE } from '@niki/utils'
@@ -26,23 +26,25 @@ export async function signUpUserController(
     }
     const { userCreated } = signUpResult.value
 
-    makeUsersProducerEvents({
+    const messageBrokerEvents = makeUsersProducerEvents({
       environments: {
         BROKERS: [usersServerENV.USERS_SERVER_KAFKA_BROKER_URL],
-        CLIENT_ID: 'users-server'
-      }
-    }).publishUserCreatedEvent({
-      payload: {
-        email: userCreated.email.value,
-        name: userCreated.name,
-        role: userCreated.role,
-        userID: userCreated.id.toString()
+        CLIENT_ID: usersServerENV.USERS_SERVER_KAFKA_CLIENT_ID
       }
     })
 
-    const resultSignInWithEmailAndPassword = await makeSignInUseCase().execute({
-      user: { id: userCreated.id }
-    })
+    if (userCreated.role === UserRole.CUSTOMER) {
+      messageBrokerEvents.publishCustomerCreatedEvent({
+        payload: { email: userCreated.email.value, name: userCreated.name, userID: userCreated.id.toString() }
+      })
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- we need to check if the user is an employee
+    } else if (userCreated.role === UserRole.EMPLOYEE) {
+      messageBrokerEvents.publishEmployeeCreatedEvent({
+        payload: { name: userCreated.name, userID: userCreated.id.toString() }
+      })
+    }
+
+    const resultSignInWithEmailAndPassword = await makeSignInUseCase().execute({ user: { id: userCreated.id } })
 
     if (resultSignInWithEmailAndPassword.isFailure()) {
       return await reply

@@ -12,7 +12,23 @@ export async function buildServer(): Promise<FastifyTypedInstance> {
   const server = fastify({
     disableRequestLogging: false,
     requestIdHeader: 'x-request-id',
-    requestIdLogLabel: 'requestID'
+    requestIdLogLabel: 'requestID',
+    ...(usersServerENV.USERS_SERVER_ENVIRONMENT === 'production'
+      ? {
+          logger: true
+        }
+      : {
+          logger: {
+            transport: {
+              target: 'pino-pretty',
+              options: {
+                colorize: true,
+                translateTime: 'SYS:standard',
+                ignore: 'pid,hostname'
+              }
+            }
+          }
+        })
   }).withTypeProvider<ZodTypeProvider>()
 
   server.setSerializerCompiler(serializerCompiler)
