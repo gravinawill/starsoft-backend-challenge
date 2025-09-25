@@ -1,5 +1,3 @@
-import { type InvalidUserNameError, type InvalidUserRoleError } from '@errors/index'
-import { User } from '@models/user.model'
 import {
   Email,
   EmailAlreadyInUseError,
@@ -8,12 +6,15 @@ import {
   type InvalidEmailError,
   type InvalidIDError,
   type InvalidPasswordFormatError,
+  type InvalidUserNameError,
+  type InvalidUserRoleError,
   type ISendLogErrorLoggerProvider,
   type ISendLogTimeUseCaseLoggerProvider,
   Password,
   type ProviderError,
   type RepositoryError,
-  UseCase
+  UseCase,
+  User
 } from '@niki/domain'
 import { type Either, failure, success } from '@niki/utils'
 import { type ISaveUsersRepository } from '@repository-contracts/users/save.users-repository'
