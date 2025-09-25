@@ -3,13 +3,17 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@models/*": ["src/domain/models/*"],
-      "@errors/*": ["src/domain/errors/*"],
-      "@use-cases/*": ["src/application/use-cases/*"],
-      "@repository-contracts/*": ["src/domain/repository-contracts/*"]
+      "@errors/*": ["./src/domain/errors/*"],
+      "@use-cases/*": ["./src/application/use-cases/*"],
+      "@repository-contracts/*": ["src/domain/repository-contracts/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@factories/*": ["./src/main/factories/*"],
+      "@controllers/*": ["./src/main/controllers/*"],
+      "@routes/*": ["./src/main/routes/*"],
+      "@main/*": ["./src/main/*"]
     }
   },
   "exclude": ["node_modules"],
   "extends": "@niki/typescript-config/base.json",
-  "include": ["**/*.ts", "../../packages/utils/src/either.util.ts"]
+  "include": ["**/*.ts"]
 }
