@@ -15,6 +15,7 @@
     "clean": "turbo clean && rm -rf .turbo coverage node_modules dist",
     "commit": "czg",
     "dev": "turbo run dev",
+    "dev:apps": "turbo run dev --filter=./apps/*",
     "fix:format": "prettier --cache --write --list-different --ignore-path .gitignore --ignore-path .prettierignore .",
     "fix:lint": "turbo run fix:lint",
     "preinstall": "npx --yes only-allow pnpm",
@@ -22,7 +23,7 @@
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest --coverage --ui",
     "test:unit:ui": "vitest --ui",
-    "with-env": "dotenvx run -f .env.local --"
+    "with-env": "dotenvx run -f .env --"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --fix",
@@ -46,7 +47,7 @@
     "@cspell/dict-redis": "^1.0.7",
     "@cspell/dict-software-terms": "^5.1.8",
     "@cspell/dict-typescript": "^3.2.3",
-    "@dotenvx/dotenvx": "^1.51.0",
+    "@dotenvx/dotenvx": "catalog:",
     "@niki/eslint-config": "workspace:*",
     "@niki/prettier-config": "workspace:*",
     "@niki/typescript-config": "workspace:*",
