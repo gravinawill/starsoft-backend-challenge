@@ -20,7 +20,16 @@
     "es-es"
   ],
   "files": ["**", ".vscode/**", ".github/**"],
-  "ignorePaths": ["pnpm-lock.yaml", ".pnpm-store/", "*.sql", "dist/**", "build/**", "_trash", "README.md"],
+  "ignorePaths": [
+    "pnpm-lock.yaml",
+    ".pnpm-store/",
+    "*.sql",
+    "dist/**",
+    "build/**",
+    "_trash",
+    "README.md",
+    "apps/users-server/src/infra/database/drizzle/migrations/*"
+  ],
   "import": [
     "@cspell/dict-redis/cspell-ext.json",
     "@cspell/dict-typescript",
@@ -39,5 +48,5 @@
   "language": "en",
   "useGitignore": true,
   "version": "0.2",
-  "words": ["bitnami", "dotenvx", "isready", "niki", "sonarjs", "acks", "Checkly"]
+  "words": ["bitnami", "dotenvx", "isready", "kafkajs", "marcalexiei", "niki", "SASL", "sonarjs", "uuidv", "XVCJ"]
 }

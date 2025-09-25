@@ -1,0 +1,28 @@
+{
+  "name": "@niki/token",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "check:lint": "eslint . --max-warnings 0",
+    "check:types": "tsc --noEmit --pretty",
+    "clean": "rm -rf .turbo node_modules dist",
+    "fix:lint": "eslint --fix ."
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
+  },
+  "dependencies": {
+    "@niki/domain": "workspace:*",
+    "@niki/logger": "workspace:*",
+    "@niki/utils": "workspace:*",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@niki/eslint-config": "workspace:*",
+    "@niki/typescript-config": "workspace:*",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "catalog:"
+  }
+}
