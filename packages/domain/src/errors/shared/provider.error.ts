@@ -1,4 +1,4 @@
-import { StatusError } from '../../shared/status-error'
+import { STATUS_ERROR } from '../../shared/status-error'
 
 type ParametersConstructorDTO = {
   error: unknown
@@ -35,7 +35,7 @@ type ParametersConstructorDTO = {
  */
 
 export class ProviderError {
-  readonly status: StatusError
+  readonly status: STATUS_ERROR
   readonly errorMessage: string
   readonly name = 'ProviderError'
   readonly errorValue: unknown
@@ -44,7 +44,7 @@ export class ProviderError {
     this.errorMessage = `Error in ${parameters.provider.name} provider in ${parameters.provider.method} method.${
       parameters.provider.externalName === '' ? '' : ` Error in external lib name: ${parameters.provider.externalName}.`
     }`
-    this.status = StatusError.PROVIDER_ERROR
+    this.status = STATUS_ERROR.PROVIDER_ERROR
     this.errorValue = parameters.error
   }
 }

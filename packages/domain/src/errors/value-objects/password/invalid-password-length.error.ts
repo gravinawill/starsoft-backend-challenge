@@ -1,7 +1,7 @@
-import { StatusError } from '../../../shared/status-error'
+import { STATUS_ERROR } from '../../../shared/status-error'
 
 export class InvalidPasswordLengthError {
-  public readonly status: StatusError
+  public readonly status: STATUS_ERROR
   public readonly errorMessage: string
   public readonly name: 'InvalidPasswordLengthError'
   public readonly errorValue: unknown
@@ -10,6 +10,6 @@ export class InvalidPasswordLengthError {
     this.errorMessage = `Invalid password length: ${parameters.passwordLength}`
     this.errorValue = null
     this.name = 'InvalidPasswordLengthError'
-    this.status = StatusError.INVALID
+    this.status = STATUS_ERROR.INVALID
   }
 }

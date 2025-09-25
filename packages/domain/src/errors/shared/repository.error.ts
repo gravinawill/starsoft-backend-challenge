@@ -1,4 +1,4 @@
-import { StatusError } from '../../shared/status-error'
+import { STATUS_ERROR } from '../../shared/status-error'
 
 type ParametersConstructorDTO = {
   error: unknown
@@ -37,7 +37,7 @@ type ParametersConstructorDTO = {
  */
 
 export class RepositoryError {
-  readonly status: StatusError
+  readonly status: STATUS_ERROR
   readonly errorMessage: string
   readonly name: 'RepositoryError'
   readonly errorValue: unknown
@@ -50,6 +50,6 @@ export class RepositoryError {
     }`
     this.errorValue = parameters.error
     this.name = 'RepositoryError'
-    this.status = StatusError.REPOSITORY_ERROR
+    this.status = STATUS_ERROR.REPOSITORY_ERROR
   }
 }
