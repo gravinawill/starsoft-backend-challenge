@@ -1,5 +1,4 @@
-import { type User } from '@models/index'
-import { type InvalidEmailError, type InvalidIDError, type RepositoryError } from '@niki/domain'
+import { type InvalidEmailError, type InvalidIDError, type RepositoryError, type User } from '@niki/domain'
 import { type Either } from '@niki/utils'
 
 export namespace ValidateEmailUsersRepositoryDTO {

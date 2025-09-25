@@ -1,5 +1,4 @@
-import { type User } from '@models/user.model'
-import { type RepositoryError } from '@niki/domain'
+import { type RepositoryError, type User } from '@niki/domain'
 import { type Either } from '@niki/utils'
 
 export namespace SaveUsersRepositoryDTO {
