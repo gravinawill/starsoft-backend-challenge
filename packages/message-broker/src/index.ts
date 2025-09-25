@@ -1,37 +1,25 @@
-import { makeLoggerProvider } from '@niki/logger'
+import { type IUsersConsumerEvents } from './event-contracts/users/consumer'
+import { type IUsersProducerEvents } from './event-contracts/users/producer'
+import { EventHandlerFactory } from './factories/event-handler-factory'
 
-import { KafkaConsumer } from './consumer'
-import { type IUsersConsumerEvents, type IUsersProducerEvents } from './event-contracts/users.event-contract'
-import { UsersConsumerEvents, UsersProducerEvents } from './events/users-events'
-import { KafkaProducer } from './producer'
-
-export * from './event-contracts/users.event-contract'
+export * from './event-contracts/users/types'
+export * from './health-check'
 
 export const makeUsersProducerEvents = (parameters: {
   environments: { CLIENT_ID: string; BROKERS: string[] }
 }): IUsersProducerEvents => {
-  return new UsersProducerEvents(
-    new KafkaProducer(
-      {
-        clientID: parameters.environments.CLIENT_ID,
-        brokers: parameters.environments.BROKERS
-      },
-      makeLoggerProvider()
-    )
-  )
+  return EventHandlerFactory.getInstance().createUsersProducer({
+    clientId: parameters.environments.CLIENT_ID,
+    brokers: parameters.environments.BROKERS
+  })
 }
 
 export const makeUsersConsumerEvents = (parameters: {
   environments: { CLIENT_ID: string; BROKERS: string[]; GROUP_ID: string }
 }): IUsersConsumerEvents => {
-  return new UsersConsumerEvents(
-    new KafkaConsumer(
-      {
-        brokers: parameters.environments.BROKERS,
-        clientID: parameters.environments.CLIENT_ID,
-        groupId: parameters.environments.GROUP_ID
-      },
-      makeLoggerProvider()
-    )
-  )
+  return EventHandlerFactory.getInstance().createUsersConsumer({
+    clientId: parameters.environments.CLIENT_ID,
+    brokers: parameters.environments.BROKERS,
+    groupId: parameters.environments.GROUP_ID
+  })
 }

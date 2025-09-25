@@ -1,8 +1,7 @@
-import type { UserEventContract } from './event-contracts/users.event-contract'
-
 import { type ISendLogErrorLoggerProvider, type ISendLogInfoLoggerProvider } from '@niki/domain'
 import { Kafka, type Producer, type ProducerRecord, type RecordMetadata, type SASLOptions } from 'kafkajs'
 
+import { type BaseEventContract } from './event-contracts/base.event-contract'
 import { type ProducerConfig } from './types'
 
 export class KafkaProducer {
@@ -55,7 +54,7 @@ export class KafkaProducer {
     }
   }
 
-  async publishUserEvent(topic: string, event: UserEventContract, partition?: number): Promise<RecordMetadata[]> {
+  async publishEvent(topic: string, event: BaseEventContract, partition?: number): Promise<RecordMetadata[]> {
     if (!this.isConnected) {
       throw new Error('❌ Producer is not connected. Call connect() first.')
     }
@@ -107,7 +106,7 @@ export class KafkaProducer {
     }
   }
 
-  async publishEvents(topic: string, events: UserEventContract[]): Promise<RecordMetadata[]> {
+  async publishEvents(topic: string, events: BaseEventContract[]): Promise<RecordMetadata[]> {
     if (!this.isConnected) {
       throw new Error('❌ Producer is not connected. Call connect() first.')
     }

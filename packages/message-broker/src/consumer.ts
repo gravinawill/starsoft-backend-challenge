@@ -1,8 +1,5 @@
-import {
-  type ISendLogErrorLoggerProvider,
-  type ISendLogInfoLoggerProvider,
-  type ISendLogWarnLoggerProvider
-} from '@niki/domain'
+import type { ISendLogErrorLoggerProvider, ISendLogInfoLoggerProvider, ISendLogWarnLoggerProvider } from '@niki/domain'
+
 import { type Consumer, type EachMessagePayload, Kafka, type SASLOptions } from 'kafkajs'
 
 import { type ConsumerConfig } from './types'

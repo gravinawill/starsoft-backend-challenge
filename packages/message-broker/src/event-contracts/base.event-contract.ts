@@ -3,6 +3,7 @@ import { type Either } from '@niki/utils'
 
 export type BaseEventContract = {
   id: string
+  type: string
   timestamp: Date
   version: string
   aggregateID: string
