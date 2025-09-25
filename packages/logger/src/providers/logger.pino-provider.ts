@@ -3,10 +3,12 @@ import {
   type ISendLogInfoLoggerProvider,
   type ISendLogTimeControllerLoggerProvider,
   type ISendLogTimeUseCaseLoggerProvider,
+  type ISendLogWarnLoggerProvider,
   type SendLogErrorLoggerProviderDTO,
   type SendLogInfoLoggerProviderDTO,
   type SendLogTimeControllerLoggerProviderDTO,
-  type SendLogTimeUseCaseLoggerProviderDTO
+  type SendLogTimeUseCaseLoggerProviderDTO,
+  type SendLogWarnLoggerProviderDTO
 } from '@niki/domain'
 import pino, { type Logger, type LoggerOptions } from 'pino'
 
@@ -15,6 +17,7 @@ export class PinoLoggerProvider
     ISendLogErrorLoggerProvider,
     ISendLogInfoLoggerProvider,
     ISendLogTimeUseCaseLoggerProvider,
+    ISendLogWarnLoggerProvider,
     ISendLogTimeControllerLoggerProvider
 {
   private static instance: PinoLoggerProvider | null = null
@@ -42,6 +45,11 @@ export class PinoLoggerProvider
     }
 
     this.logger = pino(loggerOptions)
+  }
+
+  public sendLogWarn(parameters: SendLogWarnLoggerProviderDTO.Parameters): SendLogWarnLoggerProviderDTO.Result {
+    this.logger.info(this.formatLogData(parameters))
+    return null
   }
 
   public static getInstance(): PinoLoggerProvider {
