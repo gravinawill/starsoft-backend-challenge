@@ -1,12 +1,11 @@
-import type { GenerateIDError } from '../errors/value-objects/id/generate-id.error'
-import type { Email } from '../value-objects/email.value-object'
-import type { Password } from '../value-objects/password.value-object'
-
 import { type Either, failure, success } from '@niki/utils'
 
 import { InvalidUserNameError } from '../errors/models/user/invalid-user-name.error'
 import { InvalidUserRoleError } from '../errors/models/user/invalid-user-role.error'
+import { type GenerateIDError } from '../errors/value-objects/id/generate-id.error'
+import { type Email } from '../value-objects/email.value-object'
 import { ID } from '../value-objects/id.value-object'
+import { type Password } from '../value-objects/password.value-object'
 
 import { ModelName } from './_model-name'
 
