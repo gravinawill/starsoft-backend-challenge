@@ -4,7 +4,8 @@ export default defineConfig(
   {},
   {
     rules: {
-      '@typescript-eslint/no-namespace': 'off'
+      '@typescript-eslint/no-namespace': 'off',
+      'sonarjs/todo-tag': 'off'
     }
   }
 )

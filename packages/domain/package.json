@@ -14,7 +14,8 @@
     "*.ts": "eslint --fix"
   },
   "dependencies": {
-    "@niki/utils": "workspace:*"
+    "@niki/utils": "workspace:*",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@niki/eslint-config": "workspace:*",

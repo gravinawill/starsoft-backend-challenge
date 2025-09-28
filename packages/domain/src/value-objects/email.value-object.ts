@@ -6,7 +6,7 @@ export class Email {
   public readonly value: string
   public readonly isVerified: boolean
 
-  private constructor(parameters: { email: string; isVerified: boolean }) {
+  constructor(parameters: { email: string; isVerified: boolean }) {
     this.value = parameters.email.toLowerCase().trim()
     this.isVerified = parameters.isVerified
     Object.freeze(this)

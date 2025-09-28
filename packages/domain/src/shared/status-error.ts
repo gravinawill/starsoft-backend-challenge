@@ -58,3 +58,17 @@ export function getHttpStatusCodeByStatusError(parameters: { status: STATUS_ERRO
     }
   }
 }
+
+export function extractErrorMessage(parameters: { error: unknown }): string {
+  if (parameters.error instanceof Error) return parameters.error.message
+  if (typeof parameters.error === 'string') return parameters.error
+  if (parameters.error && typeof parameters.error === 'object' && 'errorMessage' in parameters.error) {
+    const message = (parameters.error as { errorMessage: unknown }).errorMessage
+    if (typeof message === 'string') return message
+  }
+  if (parameters.error && typeof parameters.error === 'object' && 'provider' in parameters.error) {
+    const providerError = (parameters.error as { provider?: { error?: unknown } }).provider?.error
+    if (providerError && typeof providerError === 'string') return providerError
+  }
+  return 'An unexpected error occurred'
+}
