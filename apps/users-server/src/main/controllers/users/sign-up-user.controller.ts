@@ -42,6 +42,7 @@ export async function signUpUserController(
           payload: {
             userID: userCreated.id.toString(),
             name: userCreated.name,
+            email: userCreated.email.value,
             createdAt: userCreated.createdAt,
             updatedAt: userCreated.updatedAt
           }
