@@ -16,9 +16,9 @@ export const makeSignInUseCase = (): UseCase<
     makeUsersRepository(),
     makeCryptoProvider(),
     makeTokenProvider({
-      SECRET: usersServerENV.USERS_SERVER_JWT_SECRET,
-      EXPIRES_IN_MINUTES: usersServerENV.USERS_SERVER_JWT_EXPIRES_IN_MINUTES,
-      ALGORITHM: usersServerENV.USERS_SERVER_JWT_ALGORITHM,
-      ISSUER: usersServerENV.USERS_SERVER_JWT_ISSUER
+      SECRET: usersServerENV.TOKEN_PROVIDER_JWT_SECRET,
+      EXPIRES_IN_MINUTES: usersServerENV.TOKEN_PROVIDER_JWT_EXPIRES_IN_MINUTES,
+      ALGORITHM: usersServerENV.TOKEN_PROVIDER_JWT_ALGORITHM,
+      ISSUER: usersServerENV.TOKEN_PROVIDER_JWT_ISSUER
     })
   )
