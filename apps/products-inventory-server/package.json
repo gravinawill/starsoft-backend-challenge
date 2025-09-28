@@ -1,0 +1,40 @@
+{
+  "name": "@niki/products-inventory-server",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "check:lint": "eslint . --max-warnings 0",
+    "check:types": "tsc --noEmit --pretty",
+    "clean": "rm -rf .turbo node_modules dist",
+    "db:generate": "pnpm with-env prisma generate",
+    "db:migrate": "pnpm with-env prisma migrate dev",
+    "db:migrate:prod": "pnpm with-env prisma migrate deploy",
+    "dev": "pnpm with-env tsx watch src/main/server.ts",
+    "fix:lint": "eslint --fix .",
+    "with-env": "dotenvx run -f ../../.env --"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.19.4",
+    "@hono/zod-openapi": "^1.1.3",
+    "@niki/crypto": "workspace:*",
+    "@niki/domain": "workspace:*",
+    "@niki/env": "workspace:*",
+    "@niki/logger": "workspace:*",
+    "@niki/message-broker": "workspace:*",
+    "@niki/token": "workspace:*",
+    "@niki/utils": "workspace:*",
+    "@prisma/client": "^6.16.2",
+    "@scalar/hono-api-reference": "^0.9.19",
+    "hono": "^4.9.8",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "catalog:",
+    "@niki/eslint-config": "workspace:*",
+    "@niki/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "prisma": "^6.16.2",
+    "tsx": "^4.20.5",
+    "typescript": "catalog:"
+  }
+}
