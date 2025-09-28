@@ -1,10 +1,7 @@
 import {
-  type ISendLogErrorLoggerProvider,
-  type ISendLogInfoLoggerProvider,
-  type ISendLogTimeControllerLoggerProvider,
-  type ISendLogTimeUseCaseLoggerProvider,
-  type ISendLogWarnLoggerProvider,
+  type ILoggerProvider,
   type SendLogErrorLoggerProviderDTO,
+  type SendLogEventConsumerLoggerProviderDTO,
   type SendLogInfoLoggerProviderDTO,
   type SendLogTimeControllerLoggerProviderDTO,
   type SendLogTimeUseCaseLoggerProviderDTO,
@@ -12,14 +9,7 @@ import {
 } from '@niki/domain'
 import pino, { type Logger, type LoggerOptions } from 'pino'
 
-export class PinoLoggerProvider
-  implements
-    ISendLogErrorLoggerProvider,
-    ISendLogInfoLoggerProvider,
-    ISendLogTimeUseCaseLoggerProvider,
-    ISendLogWarnLoggerProvider,
-    ISendLogTimeControllerLoggerProvider
-{
+export class PinoLoggerProvider implements ILoggerProvider {
   private static instance: PinoLoggerProvider | null = null
 
   private readonly logger: Logger
@@ -31,7 +21,7 @@ export class PinoLoggerProvider
         targets: [
           {
             target: 'pino-pretty',
-            level: 'error',
+            level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
             options: {
               name: 'dev-terminal',
               colorize: true,
@@ -48,7 +38,7 @@ export class PinoLoggerProvider
   }
 
   public sendLogWarn(parameters: SendLogWarnLoggerProviderDTO.Parameters): SendLogWarnLoggerProviderDTO.Result {
-    this.logger.info(this.formatLogData(parameters))
+    this.logger.warn(this.formatLogData(parameters))
     return null
   }
 
@@ -71,25 +61,22 @@ export class PinoLoggerProvider
   }
 
   public sendLogError(parameters: SendLogErrorLoggerProviderDTO.Parameters): SendLogErrorLoggerProviderDTO.Result {
-    const { value: error, ...otherParams } = parameters
-    let msg: string
-    let stack: string | undefined
+    /*
+     * const { value: error, ...otherParams } = parameters
+     * let msg: string
+     * let stack: string | undefined
+     */
 
-    if (error instanceof Error) {
-      msg = error.message
-      stack = error.stack
-    } else {
-      msg = error ? ((error as { errorMessage?: string }).errorMessage ?? String(error as unknown)) : String(error)
-      stack = undefined
-    }
-
-    const logData = {
-      msg,
-      stack,
-      ...otherParams
-    }
-
-    this.logger.error(logData)
+    /*
+     * if (error instanceof Error) {
+     *   msg = error.message
+     *   stack = error.stack
+     * } else {
+     *   msg = error ? ((error as { errorMessage?: string }).errorMessage ?? String(error as unknown)) : String(error)
+     *   stack = undefined
+     * }
+     */
+    this.logger.error(parameters.message)
     return null
   }
 
@@ -103,6 +90,13 @@ export class PinoLoggerProvider
   public sendLogTimeUseCase(
     parameters: SendLogTimeUseCaseLoggerProviderDTO.Parameters
   ): SendLogTimeUseCaseLoggerProviderDTO.Result {
+    this.logger.info(this.formatLogData(parameters))
+    return null
+  }
+
+  public sendLogEventConsumer(
+    parameters: SendLogEventConsumerLoggerProviderDTO.Parameters
+  ): SendLogEventConsumerLoggerProviderDTO.Result {
     this.logger.info(this.formatLogData(parameters))
     return null
   }
