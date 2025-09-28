@@ -13,10 +13,8 @@ export async function buildServer(): Promise<FastifyTypedInstance> {
     disableRequestLogging: false,
     requestIdHeader: 'x-request-id',
     requestIdLogLabel: 'requestID',
-    ...(usersServerENV.USERS_SERVER_ENVIRONMENT === 'production'
-      ? {
-          logger: true
-        }
+    ...(usersServerENV.ENVIRONMENT === 'production'
+      ? { logger: true }
       : {
           logger: {
             transport: {
@@ -35,7 +33,7 @@ export async function buildServer(): Promise<FastifyTypedInstance> {
   server.setValidatorCompiler(validatorCompiler)
 
   await server.register(fastifyCors as never, {
-    origin: usersServerENV.USERS_SERVER_ENVIRONMENT === 'production' ? ['https://niki.gravina.dev'] : ['*'],
+    origin: usersServerENV.ENVIRONMENT === 'production' ? ['https://niki.gravina.dev'] : ['*'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-request-id'],
     credentials: true
