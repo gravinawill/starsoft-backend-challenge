@@ -61,7 +61,7 @@ export const SearchProductsQuerySchema = PaginationQuerySchema.extend({
     description: 'Filter by product availability status'
   }),
   sort_by: SortBySearchProductsEnumSchema.optional().default('name').openapi({
-    example: 'price_in_cents',
+    example: 'price-in-cents',
     description: 'Field to sort results by'
   }),
   sort_order: SortOrderSearchProductsEnumSchema.optional().default('asc').openapi({
