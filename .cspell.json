@@ -28,7 +28,9 @@
     "build/**",
     "_trash",
     "README.md",
-    "apps/users-server/src/infra/database/drizzle/migrations/*"
+    "apps/users-server/src/infra/database/drizzle/migrations/*",
+    "apps/products-inventory-server/prisma/migrations/*",
+    "scripts/*"
   ],
   "import": [
     "@cspell/dict-redis/cspell-ext.json",
@@ -49,19 +51,32 @@
   "useGitignore": true,
   "version": "0.2",
   "words": [
+    "awaitconsu",
     "bitnami",
+    "começa",
+    "contém",
+    "debezium",
     "dotenvx",
+    "exato",
     "imok",
+    "initdb",
+    "INSYNC",
     "isready",
     "kafkajs",
+    "maior",
     "marcalexiei",
     "niki",
+    "prefixo",
     "provectuslabs",
     "ruok",
     "SASL",
+    "similaridade",
     "sonarjs",
     "Thiel",
+    "Timestamptz",
+    "ulimits",
     "uuidv",
+    "xpack",
     "XVCJ"
   ]
 }
