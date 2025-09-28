@@ -1,3 +1,4 @@
+export * from './contracts/events/_index'
 export * from './contracts/events/products/product-created.contract-event'
 export * from './contracts/events/products/product-updated-image-url.contract-event'
 export * from './contracts/events/users/customer-created.contract-event'

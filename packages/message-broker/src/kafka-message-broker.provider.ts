@@ -1,7 +1,11 @@
 import type { ClientID, GroupID } from '.'
 
-import { type ILoggerProvider } from '@niki/domain'
-import { createEventContract, type EventContractType, selectEventContractType } from '@niki/domain/src/contracts/events'
+import {
+  createEventContract,
+  type EventContractType,
+  type ILoggerProvider,
+  selectEventContractType
+} from '@niki/domain'
 import { type Consumer, Kafka, logLevel, type Producer } from 'kafkajs'
 import { type z } from 'zod'
 

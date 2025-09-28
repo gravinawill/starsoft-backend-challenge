@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { type BaseEventContract } from '../index'
+import { type BaseEventContract } from '../_index'
 
 export const EMPLOYEE_CREATED_EVENT_CONTRACT_TYPE = 'users.employee.created' as const
 
