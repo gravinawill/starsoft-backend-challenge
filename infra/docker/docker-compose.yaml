@@ -29,7 +29,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5' # Reduced CPU for M4 efficiency
+          cpus: '0.5'
           memory: 512MB
         reservations:
           cpus: '0.2'
