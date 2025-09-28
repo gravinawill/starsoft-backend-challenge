@@ -2,8 +2,11 @@ import type { HandlerMessageBroker } from '@niki/message-broker/src/kafka-messag
 
 import { handleCustomerCreated } from '@main/handlers/users/customer-created.handler'
 import { handleEmployeeCreated } from '@main/handlers/users/employee-created.handler'
-import { usersCustomerCreatedEventPayloadSchema, usersEmployeeCreatedEventPayloadSchema } from '@niki/domain'
-import { EventContractType } from '@niki/domain/src/contracts/events'
+import {
+  EventContractType,
+  usersCustomerCreatedEventPayloadSchema,
+  usersEmployeeCreatedEventPayloadSchema
+} from '@niki/domain'
 import { notificationServerENV } from '@niki/env'
 import { ClientID, GroupID, makeMessageBrokerProvider } from '@niki/message-broker'
 

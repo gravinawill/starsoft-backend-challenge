@@ -8,7 +8,7 @@ import {
   type UsersCustomerCreatedEventPayload,
   type UsersEmployeeCreatedEventPayload
 } from '@niki/domain'
-import { EventContractType } from '@niki/domain/src/contracts/events'
+import { EventContractType } from '@niki/domain'
 import { productInventoryServerENV } from '@niki/env'
 import { ClientID, makeMessageBrokerProvider } from '@niki/message-broker'
 import { HTTP_STATUS_CODE } from '@niki/utils'

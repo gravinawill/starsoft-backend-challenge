@@ -1,6 +1,5 @@
 import { handleEmployeeCreated } from '@main/handlers/users/employee-created.handler'
-import { usersEmployeeCreatedEventPayloadSchema } from '@niki/domain'
-import { EventContractType } from '@niki/domain/src/contracts/events'
+import { EventContractType, usersEmployeeCreatedEventPayloadSchema } from '@niki/domain'
 import { productInventoryServerENV } from '@niki/env'
 import { ClientID, GroupID, makeMessageBrokerProvider } from '@niki/message-broker'
 import { type HandlerMessageBroker } from '@niki/message-broker/src/kafka-message-broker.provider'
