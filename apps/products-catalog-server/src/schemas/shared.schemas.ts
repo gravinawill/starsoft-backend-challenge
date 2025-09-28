@@ -102,13 +102,13 @@ export const PaginationQuerySchema = z
           .number()
           .int()
           .min(1, { message: 'Page size must be greater than 0' })
-          .max(500, { message: 'Page size cannot exceed 500' })
+          .max(10_000, { message: 'Page size cannot exceed 10000' })
       )
       .optional()
       .default(50)
       .openapi({
         example: 20,
-        description: 'Number of items per page (max 500)'
+        description: 'Number of items per page (max 10000)'
       })
   })
   .openapi('PaginationQuery')
