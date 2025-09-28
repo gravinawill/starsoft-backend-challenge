@@ -43,7 +43,7 @@ export const openapiConfig: FastifyRegisterOptions<SwaggerOptions> = {
         url: `http://localhost:${usersServerENV.USERS_SERVER_PORT}`,
         description: 'Local Development Server'
       },
-      ...(usersServerENV.USERS_SERVER_ENVIRONMENT === 'production'
+      ...(usersServerENV.ENVIRONMENT === 'production'
         ? [
             {
               url: 'https://users.niki.com',
