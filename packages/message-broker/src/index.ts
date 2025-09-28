@@ -1,25 +1,24 @@
-import { type IUsersConsumerEvents } from './event-contracts/users/consumer'
-import { type IUsersProducerEvents } from './event-contracts/users/producer'
-import { EventHandlerFactory } from './factories/event-handler-factory'
+import { makeLoggerProvider } from '@niki/logger'
 
-export * from './event-contracts/users/types'
-export * from './health-check'
+import { type IConsumerMessageBrokerProvider, KafkaMessageBrokerProvider } from './kafka-message-broker.provider'
 
-export const makeUsersProducerEvents = (parameters: {
-  environments: { CLIENT_ID: string; BROKERS: string[] }
-}): IUsersProducerEvents => {
-  return EventHandlerFactory.getInstance().createUsersProducer({
-    clientId: parameters.environments.CLIENT_ID,
-    brokers: parameters.environments.BROKERS
-  })
+export enum ClientID {
+  USERS_SERVER = 'users-server',
+  PRODUCTS_INVENTORY_SERVER = 'products-inventory-server',
+  NOTIFICATION_SERVER = 'notification-server'
 }
 
-export const makeUsersConsumerEvents = (parameters: {
-  environments: { CLIENT_ID: string; BROKERS: string[]; GROUP_ID: string }
-}): IUsersConsumerEvents => {
-  return EventHandlerFactory.getInstance().createUsersConsumer({
-    clientId: parameters.environments.CLIENT_ID,
-    brokers: parameters.environments.BROKERS,
-    groupId: parameters.environments.GROUP_ID
-  })
+export enum GroupID {
+  USERS_SERVER = 'users-server',
+  PRODUCTS_INVENTORY_SERVER = 'products-inventory-server',
+  NOTIFICATION_SERVER = 'notification-server'
 }
+
+export const makeMessageBrokerProvider = (parameters: {
+  brokers: string[]
+  clientID: ClientID
+}): IConsumerMessageBrokerProvider =>
+  KafkaMessageBrokerProvider.getInstance({
+    config: { brokers: parameters.brokers, clientID: parameters.clientID },
+    logger: makeLoggerProvider()
+  })
