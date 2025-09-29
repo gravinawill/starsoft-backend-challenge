@@ -1,4 +1,4 @@
-import type { HandlerMessageBroker } from '@niki/message-broker/src/kafka-message-broker.provider'
+import { HandlerMessageBroker } from '@niki/message-broker/src/kafka-message-broker.provider'
 
 import { handleCustomerCreated } from '@main/handlers/users/customer-created.handler'
 import { handleEmployeeCreated } from '@main/handlers/users/employee-created.handler'

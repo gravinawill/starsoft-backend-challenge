@@ -1,9 +1,9 @@
-import type { Database } from '../database'
-import type {
+import { Database } from '../database'
+import {
   ISaveEmployeesRepository,
   SaveEmployeesRepositoryDTO
 } from '@repository-contracts/employees/save.employees-repository'
-import type {
+import {
   IValidateIDEmployeesRepository,
   ValidateIDEmployeesRepositoryDTO
 } from '@repository-contracts/employees/validate-id.employees-repository'

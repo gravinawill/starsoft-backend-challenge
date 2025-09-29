@@ -5,7 +5,8 @@
   "files": [
     "./base.json",
     "./nextjs.json",
-    "./react-library.json"
+    "./react-library.json",
+    "./nestjs.json"
   ],
   "publishConfig": {
     "access": "public"

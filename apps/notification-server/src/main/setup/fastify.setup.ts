@@ -6,6 +6,6 @@ export function createFastifyApp() {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
   app.setSerializerCompiler(serializerCompiler)
   app.setValidatorCompiler(validatorCompiler)
-  app.register(fastifyCors, { origin: '*' })
+  app.register(fastifyCors as never, { origin: '*' })
   return app
 }

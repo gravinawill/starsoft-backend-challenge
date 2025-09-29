@@ -1,5 +1,3 @@
-import type { ClientID, GroupID } from '.'
-
 import {
   createEventContract,
   type EventContractType,
@@ -9,6 +7,7 @@ import {
 import { type Consumer, Kafka, logLevel, type Producer } from 'kafkajs'
 import { type z } from 'zod'
 
+import { type ClientID, type GroupID } from '.'
 import { parseKafkaMessage } from './parse-kafka-message'
 
 export namespace StartConsumerMessageBrokerDTO {

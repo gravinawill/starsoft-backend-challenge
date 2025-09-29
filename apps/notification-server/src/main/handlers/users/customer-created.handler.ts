@@ -1,8 +1,7 @@
-import type { UsersCustomerCreatedEventPayload } from '@niki/domain'
-import type { HandlerMessageBroker } from '@niki/message-broker/src/kafka-message-broker.provider'
-
 import { sendWelcomeCustomerEmail } from '@main/services/email/email.service'
+import { type UsersCustomerCreatedEventPayload } from '@niki/domain'
 import { makeLoggerProvider } from '@niki/logger'
+import { type HandlerMessageBroker } from '@niki/message-broker/src/kafka-message-broker.provider'
 
 export const handleCustomerCreated: HandlerMessageBroker<UsersCustomerCreatedEventPayload> = async (parameters) => {
   const logger = makeLoggerProvider()

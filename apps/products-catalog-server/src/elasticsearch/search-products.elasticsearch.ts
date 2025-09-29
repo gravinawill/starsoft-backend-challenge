@@ -1,4 +1,4 @@
-import type { Product, SortBySearchProductsEnum, SortOrderSearchProductsEnum } from '@models/product'
+import { Product, SortBySearchProductsEnum, SortOrderSearchProductsEnum } from '@models/product'
 
 import { Client } from '@elastic/elasticsearch'
 import { type QueryDslQueryContainer, type SortCombinations } from '@elastic/elasticsearch/lib/api/types'

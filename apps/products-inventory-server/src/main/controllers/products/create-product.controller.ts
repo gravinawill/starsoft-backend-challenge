@@ -1,4 +1,4 @@
-import type { ProductsProductCreatedEventPayload } from '@niki/domain'
+import { ProductsProductCreatedEventPayload } from '@niki/domain'
 
 import { makeAuthenticateEmployeeUseCase } from '@factories/use-cases/employees/authenticate-employee-use-case.factory'
 import { makeCreateProductUseCase } from '@factories/use-cases/products/create-product-use-case.factory'

@@ -2,5 +2,6 @@ export enum ModelName {
   USER = 'user',
   EMPLOYEE = 'employee',
   CUSTOMER = 'customer',
-  PRODUCT = 'product'
+  PRODUCT = 'product',
+  ORDER = 'order'
 }
