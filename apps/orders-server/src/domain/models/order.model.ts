@@ -1,7 +1,7 @@
 import { type Customer } from '@models/customer.model'
 import { type GenerateIDError, ID, ModelName } from '@niki/domain'
 import { type Either } from '@niki/utils'
-import { failure, success } from 'dist/src/utils/either.util'
+import { failure, success } from '@niki/utils'
 
 import { type Product } from './product.model'
 
