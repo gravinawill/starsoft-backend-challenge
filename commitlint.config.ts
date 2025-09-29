@@ -17,7 +17,8 @@ const scopes = [...apps, ...packages, ...configs]
 export default defineConfig({
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'scope-enum': [2, 'always', ['release', ...scopes]]
+    'scope-enum': [2, 'always', ['release', 'workspace', ...scopes]],
+    'header-max-length': [2, 'always', 200]
   },
   prompt: {
     customScopesAlign: 'top'

@@ -1,8 +1,10 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
-  - 'configs/*'
+  - apps/*
+  - packages/*
+  - configs/*
 
 catalog:
-  '@types/node': '^24.5.2'
-  'typescript': '^5.9.2'
+  '@dotenvx/dotenvx': ^1.51.0
+  '@types/node': ^24.5.2
+  typescript: ^5.9.2
+  zod: 4.1.11

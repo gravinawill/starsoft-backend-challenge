@@ -1,0 +1,42 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PRODUCT_INVENTORY_SERVER_DATABASE_URL")
+}
+
+model Employee {
+  name String @map("name") @db.VarChar(255)
+
+  id        String    @id @unique @map("id") @db.Uuid()
+  createdAt DateTime  @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  products Product[] @relation("product_created_by_employee")
+
+  @@index([id])
+  @@map("employees")
+}
+
+model Product {
+  name             String  @map("name") @db.VarChar(255)
+  priceInCents     Int     @map("price_in_cents") @db.Integer()
+  imageURL         String? @map("image_url") @db.VarChar(255)
+  availableCount   Int     @map("available_count") @db.Integer()
+  unavailableCount Int     @map("unavailable_count") @db.Integer()
+
+  createdByEmployeeID String   @map("created_by_employee_id") @db.Uuid()
+  createdByEmployee   Employee @relation(fields: [createdByEmployeeID], references: [id], name: "product_created_by_employee", onDelete: Cascade, onUpdate: Cascade)
+
+  id        String    @id @unique @map("id") @db.Uuid()
+  createdAt DateTime  @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@index([id])
+  @@map("products")
+}

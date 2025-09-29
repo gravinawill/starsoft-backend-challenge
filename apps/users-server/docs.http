@@ -1,0 +1,23 @@
+### User Sign Up
+
+POST http://localhost:2225/users/sign-up
+Content-Type: application/json
+
+{
+  "name": "Will Smith",
+  "email": "will.smith323@example.com",
+  "password": "StrongPsw0rd@2024",
+  "role": "customer"
+}
+
+### User Sign In
+
+POST http://localhost:2225/users/sign-in
+Content-Type: application/json
+
+{
+  "credentials": {
+    "email": "will.smith2@example.com",
+    "password": "StrongPsw0rd@2024"
+  }
+}

@@ -15,14 +15,17 @@
     "clean": "turbo clean && rm -rf .turbo coverage node_modules dist",
     "commit": "czg",
     "dev": "turbo run dev",
+    "dev:apps": "turbo run dev --filter=./apps/*",
+    "fix": "turbo fix:lint && pnpm fix:format",
     "fix:format": "prettier --cache --write --list-different --ignore-path .gitignore --ignore-path .prettierignore .",
     "fix:lint": "turbo run fix:lint",
     "preinstall": "npx --yes only-allow pnpm",
     "prepare": "husky && pnpm build:configs && pnpm build:packages",
+    "scripts:create-many-products": "tsx scripts/create-many-products.ts",
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest --coverage --ui",
     "test:unit:ui": "vitest --ui",
-    "with-env": "dotenvx run -f .env.local --"
+    "with-env": "dotenvx run -f .env --"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --fix",
@@ -30,6 +33,10 @@
       "prettier --write --ignore-unknown",
       "pnpm check:spelling"
     ]
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.0.0",
+    "axios": "^1.12.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -46,7 +53,7 @@
     "@cspell/dict-redis": "^1.0.7",
     "@cspell/dict-software-terms": "^5.1.8",
     "@cspell/dict-typescript": "^3.2.3",
-    "@dotenvx/dotenvx": "^1.49.0",
+    "@dotenvx/dotenvx": "catalog:",
     "@niki/eslint-config": "workspace:*",
     "@niki/prettier-config": "workspace:*",
     "@niki/typescript-config": "workspace:*",
@@ -58,11 +65,12 @@
     "czg": "^1.12.0",
     "eslint": "^9.36.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
+    "lint-staged": "^16.2.0",
     "prettier": "^3.6.2",
     "prettier-plugin-packagejson": "^2.5.19",
     "prettier-plugin-prisma": "^5.0.0",
-    "turbo": "^2.5.7",
+    "tsx": "^4.20.6",
+    "turbo": "^2.5.8",
     "typescript": "catalog:",
     "vitest": "^3.2.4"
   },

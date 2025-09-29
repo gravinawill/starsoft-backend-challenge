@@ -40,3 +40,53 @@ yarn-error.log*
 _trash
 
 .docker/
+
+# Environment files
+.env.local
+.env.production
+.env.staging
+*.env.backup
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# Data directories (in case they're not using Docker volumes)
+data/
+postgres/data/
+elasticsearch/data/
+kafka/data/
+
+# Backups
+backups/
+*.backup
+*.sql.dump
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Monitoring data
+monitoring/grafana/data/
+monitoring/prometheus/data/
+
+# Secrets (never commit these!)
+secrets/
+*.key
+*.pem
+*.crt
+
+infra/docker/elasticsearch/nodes

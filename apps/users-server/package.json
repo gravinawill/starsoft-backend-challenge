@@ -1,0 +1,59 @@
+{
+  "name": "@niki/users-server",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./dist/server.js",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/server.js",
+  "module": "./dist/server.js",
+  "types": "./dist/server.d.ts",
+  "scripts": {
+    "build": "tsdown",
+    "check:lint": "eslint . --max-warnings 0",
+    "check:types": "tsc --noEmit --pretty",
+    "clean": "rm -rf .turbo node_modules dist",
+    "db:generate": "pnpm with-env drizzle-kit generate",
+    "db:migrate": "pnpm with-env drizzle-kit migrate",
+    "db:pull": "pnpm with-env drizzle-kit pull",
+    "db:push": "pnpm with-env drizzle-kit push",
+    "dev": "pnpm with-env tsx watch src/main/server.ts",
+    "fix:lint": "eslint --fix .",
+    "start": "pnpm with-env node ./dist/server.js",
+    "with-env": "dotenvx run -f ../../.env --"
+  },
+  "dependencies": {
+    "@fastify/swagger": "^9.5.1",
+    "@marcalexiei/fastify-type-provider-zod": "^2.0.1",
+    "@niki/crypto": "workspace:*",
+    "@niki/domain": "workspace:*",
+    "@niki/env": "workspace:*",
+    "@niki/logger": "workspace:*",
+    "@niki/message-broker": "workspace:*",
+    "@niki/token": "workspace:*",
+    "@niki/utils": "workspace:*",
+    "@scalar/fastify-api-reference": "^1.36.0",
+    "drizzle-orm": "^0.44.5",
+    "pg": "^8.16.3",
+    "pino-pretty": "^13.1.1",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "catalog:",
+    "@fastify/cors": "11.1.0",
+    "@niki/eslint-config": "workspace:*",
+    "@niki/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.4",
+    "fastify": "5.6.1",
+    "fastify-plugin": "^5.0.1",
+    "tsdown": "^0.14.2",
+    "tsx": "^4.20.5",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": "24.8.0"
+  }
+}

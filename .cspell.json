@@ -20,7 +20,18 @@
     "es-es"
   ],
   "files": ["**", ".vscode/**", ".github/**"],
-  "ignorePaths": ["pnpm-lock.yaml", ".pnpm-store/", "*.sql", "dist/**", "build/**", "_trash", "README.md"],
+  "ignorePaths": [
+    "pnpm-lock.yaml",
+    ".pnpm-store/",
+    "*.sql",
+    "dist/**",
+    "build/**",
+    "_trash",
+    "README.md",
+    "apps/users-server/src/infra/database/drizzle/migrations/*",
+    "apps/products-inventory-server/prisma/migrations/*",
+    "scripts/*"
+  ],
   "import": [
     "@cspell/dict-redis/cspell-ext.json",
     "@cspell/dict-typescript",
@@ -39,5 +50,33 @@
   "language": "en",
   "useGitignore": true,
   "version": "0.2",
-  "words": ["bitnami", "dotenvx", "isready", "niki", "sonarjs", "acks", "Checkly"]
+  "words": [
+    "awaitconsu",
+    "bitnami",
+    "começa",
+    "contém",
+    "debezium",
+    "dotenvx",
+    "exato",
+    "imok",
+    "initdb",
+    "INSYNC",
+    "isready",
+    "kafkajs",
+    "maior",
+    "marcalexiei",
+    "niki",
+    "prefixo",
+    "provectuslabs",
+    "ruok",
+    "SASL",
+    "similaridade",
+    "sonarjs",
+    "Thiel",
+    "Timestamptz",
+    "ulimits",
+    "uuidv",
+    "xpack",
+    "XVCJ"
+  ]
 }
