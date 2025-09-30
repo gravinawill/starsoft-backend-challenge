@@ -393,56 +393,56 @@ services:
         max-file: '3'
 
   # Users Server - User authentication and management
-  users-server:
-    container_name: niki-users-server
-    build:
-      context: ../../ # Contexto na RAIZ do projeto (relativo a infra/docker)
-      dockerfile: ./apps/users-server/Dockerfile
-      target: production # Use the production stage
-    depends_on:
-      postgres:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-      kafka-connect:
-        condition: service_healthy
-    env_file:
-      - ../../.env
-    ports:
-      - '${USERS_SERVER_PORT}:${USERS_SERVER_PORT}'
-    environment:
-      - ENVIRONMENT=${ENVIRONMENT}
-      # Message Broker
-      - MESSAGE_BROKER_PROVIDER_BROKER_URL=${MESSAGE_BROKER_PROVIDER_BROKER_URL}
-        # JWT
-      - TOKEN_PROVIDER_JWT_ISSUER=${TOKEN_PROVIDER_JWT_ISSUER}
-      - TOKEN_PROVIDER_JWT_SECRET=${TOKEN_PROVIDER_JWT_SECRET}
-      - TOKEN_PROVIDER_JWT_EXPIRES_IN_MINUTES=${TOKEN_PROVIDER_JWT_EXPIRES_IN_MINUTES}
-      - TOKEN_PROVIDER_JWT_ALGORITHM=${TOKEN_PROVIDER_JWT_ALGORITHM}
-      - USERS_SERVER_PORT=${USERS_SERVER_PORT}
-      - USERS_SERVER_DATABASE_URL=${USERS_SERVER_DATABASE_URL}
-    volumes:
-      - users_server_data:/app/data
-    restart: unless-stopped
-    healthcheck:
-      test: ['CMD-SHELL', 'curl -f http://localhost:${USERS_SERVER_PORT}/healthcheck || exit 1']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512MB
-        reservations:
-          cpus: '0.2'
-          memory: 256MB
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '10m'
-        max-file: '3'
+  # users-server:
+  #   container_name: niki-users-server
+  #   build:
+  #     context: ../../ # Contexto na RAIZ do projeto (relativo a infra/docker)
+  #     dockerfile: ./apps/users-server/Dockerfile
+  #     target: production # Use the production stage
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     kafka:
+  #       condition: service_healthy
+  #     kafka-connect:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ../../.env
+  #   ports:
+  #     - '${USERS_SERVER_PORT}:${USERS_SERVER_PORT}'
+  #   environment:
+  #     - ENVIRONMENT=${ENVIRONMENT}
+  #     # Message Broker
+  #     - MESSAGE_BROKER_PROVIDER_BROKER_URL=${MESSAGE_BROKER_PROVIDER_BROKER_URL}
+  #       # JWT
+  #     - TOKEN_PROVIDER_JWT_ISSUER=${TOKEN_PROVIDER_JWT_ISSUER}
+  #     - TOKEN_PROVIDER_JWT_SECRET=${TOKEN_PROVIDER_JWT_SECRET}
+  #     - TOKEN_PROVIDER_JWT_EXPIRES_IN_MINUTES=${TOKEN_PROVIDER_JWT_EXPIRES_IN_MINUTES}
+  #     - TOKEN_PROVIDER_JWT_ALGORITHM=${TOKEN_PROVIDER_JWT_ALGORITHM}
+  #     - USERS_SERVER_PORT=${USERS_SERVER_PORT}
+  #     - USERS_SERVER_DATABASE_URL=${USERS_SERVER_DATABASE_URL}
+  #   volumes:
+  #     - users_server_data:/app/data
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ['CMD-SHELL', 'curl -f http://localhost:${USERS_SERVER_PORT}/healthcheck || exit 1']
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: 512MB
+  #       reservations:
+  #         cpus: '0.2'
+  #         memory: 256MB
+  #   logging:
+  #     driver: 'json-file'
+  #     options:
+  #       max-size: '10m'
+  #       max-file: '3'
 
 volumes:
   users_server_data:

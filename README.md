@@ -15,14 +15,8 @@ Tempo de desenvolvimento: [![wakatime](https://wakatime.com/badge/user/9ea7b7c5-
 Antes de iniciar, configure as variáveis de ambiente:
 
 ```bash
-# Copie o arquivo .env.example para .env
 cp .env.example .env
-
-# Edite o arquivo .env com suas configurações (opcional)
-# Para desenvolvimento local, os valores padrão geralmente funcionam
 ```
-
-📖 **Para documentação completa sobre variáveis de ambiente, consulte [ENVIRONMENT_VARIABLES.md](./ENVIRONMENT_VARIABLES.md)**
 
 ### Passos para executar
 
@@ -45,21 +39,16 @@ cp .env.example .env
    docker compose up -d
    ```
 
-4. Em outro terminal (na raiz do projeto), rode as aplicações em modo desenvolvimento:
+4. Precisa adicionar o arquivo `elasticsearch.properties` que está na pasta `infra/docker/kafka/connectors` no control center do kafka para que ele possa enviar os eventos para o elasticsearch.
+
+5. Precisa rodar as migrations na pasta root do projeto com o comando:
+
+   ```bash
+   pnpm run db:migrate
+   ```
+
+6. Em outro terminal (na raiz do projeto), rode as aplicações em modo desenvolvimento:
 
    ```bash
    pnpm run dev:apps
    ```
-
-### Serviços Disponíveis
-
-Após iniciar, os seguintes serviços estarão disponíveis:
-
-- **Users Server**: http://localhost:2230
-- **Products Catalog Server**: http://localhost:2226
-- **Product Inventory Server**: http://localhost:2227
-- **Orders Server**: http://localhost:2229
-- **Notification Server**: http://localhost:2228
-- **PostgreSQL**: localhost:5432
-- **Kafka**: localhost:9094
-- **Elasticsearch**: http://localhost:9200
