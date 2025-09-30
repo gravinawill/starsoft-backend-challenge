@@ -1,0 +1,120 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+  output     = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DELIVERY_SERVER_DATABASE_URL")
+}
+
+enum ShipmentStatus {
+  SHIPMENT_CREATED
+  DELIVERY_FAILED
+  DELIVERY_COMPLETED
+}
+
+enum OrderStatus {
+  CREATED
+  SHIPMENT_CREATED
+  DELIVERY_FAILED
+  DELIVERY_COMPLETED
+}
+
+model Customer {
+  name String @map("name") @db.VarChar(255)
+
+  orders Order[] @relation(name: "OrderCustomer")
+
+  id        String     @id @unique @map("id") @db.Uuid()
+  createdAt DateTime   @map("created_at") @db.Timestamptz()
+  updatedAt DateTime   @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime?  @map("deleted_at") @db.Timestamptz()
+  Shipment  Shipment[] @relation(name: "ShipmentCustomer")
+
+  @@index([id])
+  @@map("customers")
+}
+
+model Employee {
+  name String @map("name") @db.VarChar(255)
+
+  id        String     @id @unique @map("id") @db.Uuid()
+  createdAt DateTime   @map("created_at") @db.Timestamptz()
+  updatedAt DateTime   @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime?  @map("deleted_at") @db.Timestamptz()
+  Shipment  Shipment[] @relation(name: "ShipmentDeliveredByEmployee")
+
+  @@index([id])
+  @@map("employees")
+}
+
+model Order {
+  status OrderStatus @map("status")
+
+  customerID String   @map("customer_id") @db.Uuid()
+  customer   Customer @relation(fields: [customerID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "OrderCustomer", map: "order_customer")
+
+  id        String     @id @unique @map("id") @db.Uuid()
+  createdAt DateTime   @map("created_at") @db.Timestamptz()
+  updatedAt DateTime   @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime?  @map("deleted_at") @db.Timestamptz()
+  Shipment  Shipment[] @relation(name: "ShipmentOrder")
+
+  @@index([id])
+  @@map("orders")
+}
+
+model Product {
+  shipmentProducts ShipmentProduct[] @relation(name: "ShipmentProductProduct")
+
+  id        String    @id @unique @map("id") @db.Uuid()
+  createdAt DateTime  @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@index([id])
+  @@map("products")
+}
+
+model ShipmentProduct {
+  quantity Int @map("quantity") @db.Integer()
+
+  productID String  @map("product_id") @db.Uuid()
+  product   Product @relation(fields: [productID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "ShipmentProductProduct", map: "shipment_product_product")
+
+  shipmentID String   @map("shipment_id") @db.Uuid()
+  shipment   Shipment @relation(fields: [shipmentID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "ShipmentProductShipment", map: "shipment_product_shipment")
+
+  createdAt DateTime  @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@id([productID, shipmentID])
+  @@map("shipment_products")
+}
+
+model Shipment {
+  status      ShipmentStatus @map("status")
+  deliveredAt DateTime?      @map("delivered_at") @db.Timestamptz()
+
+  deliveredByEmployeeID String?   @map("delivered_by_employee_id") @db.Uuid()
+  deliveredByEmployee   Employee? @relation(fields: [deliveredByEmployeeID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "ShipmentDeliveredByEmployee", map: "shipment_delivered_by_employee")
+
+  customerID String   @map("customer_id") @db.Uuid()
+  customer   Customer @relation(fields: [customerID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "ShipmentCustomer", map: "shipment_customer")
+
+  orderID String @map("order_id") @db.Uuid()
+  order   Order  @relation(fields: [orderID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "ShipmentOrder", map: "shipment_order")
+
+  shipmentProducts ShipmentProduct[] @relation(name: "ShipmentProductShipment")
+
+  id        String    @id @unique @map("id") @db.Uuid()
+  createdAt DateTime  @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@index([id])
+  @@map("shipments")
+}

@@ -1,7 +1,7 @@
 import { makeUsersRepository } from '@factories/repositories/users-repository.factory'
+import { usersServerENV } from '@main/users-server.env'
 import { makeCryptoProvider } from '@niki/crypto'
 import { type UseCase } from '@niki/domain'
-import { usersServerENV } from '@niki/env'
 import { makeLoggerProvider } from '@niki/logger'
 import { makeTokenProvider } from '@niki/token'
 import { SignInUseCase, type SignInUseCaseDTO } from '@use-cases/users/sign-in-user.use-case'

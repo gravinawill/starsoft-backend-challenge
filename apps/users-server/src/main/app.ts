@@ -1,7 +1,7 @@
 import { fastifyCors } from '@fastify/cors'
 import fastifySwagger from '@fastify/swagger'
+import { usersServerENV } from '@main/users-server.env'
 import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from '@marcalexiei/fastify-type-provider-zod'
-import { usersServerENV } from '@niki/env'
 import { routes } from '@routes/_routes'
 import fastifyApiReference from '@scalar/fastify-api-reference'
 import { fastify } from 'fastify'
@@ -12,25 +12,30 @@ export async function buildServer(): Promise<FastifyTypedInstance> {
   const server = fastify({
     disableRequestLogging: false,
     requestIdHeader: 'x-request-id',
-    requestIdLogLabel: 'requestID',
-    ...(usersServerENV.ENVIRONMENT === 'production'
-      ? { logger: true }
-      : {
-          logger: {
-            transport: {
-              target: 'pino-pretty',
-              options: {
-                colorize: true,
-                translateTime: 'SYS:standard',
-                ignore: 'pid,hostname'
-              }
-            }
-          }
-        })
+    requestIdLogLabel: 'requestId',
+    genReqId: (req) => {
+      return typeof req.headers['x-request-id'] === 'string' ? req.headers['x-request-id'] : crypto.randomUUID()
+    },
+    logger: {
+      level: 'info',
+      transport: {
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          translateTime: 'yyyy-mm-dd HH:MM:ss Z',
+          ignore: 'pid,hostname',
+          messageFormat: '[{requestId}] {msg}',
+          singleLine: false,
+          hideObject: false
+        }
+      }
+    }
   }).withTypeProvider<ZodTypeProvider>()
 
   server.setSerializerCompiler(serializerCompiler)
   server.setValidatorCompiler(validatorCompiler)
+
+  // loggerMiddleware(server)
 
   await server.register(fastifyCors as never, {
     origin: usersServerENV.ENVIRONMENT === 'production' ? ['https://niki.gravina.dev'] : ['*'],

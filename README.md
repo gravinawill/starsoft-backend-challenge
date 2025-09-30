@@ -10,29 +10,56 @@ Tempo de desenvolvimento: [![wakatime](https://wakatime.com/badge/user/9ea7b7c5-
 
 ## Como rodar o projeto
 
+### Configuração de Variáveis de Ambiente
+
+Antes de iniciar, configure as variáveis de ambiente:
+
+```bash
+# Copie o arquivo .env.example para .env
+cp .env.example .env
+
+# Edite o arquivo .env com suas configurações (opcional)
+# Para desenvolvimento local, os valores padrão geralmente funcionam
+```
+
+📖 **Para documentação completa sobre variáveis de ambiente, consulte [ENVIRONMENT_VARIABLES.md](./ENVIRONMENT_VARIABLES.md)**
+
+### Passos para executar
+
 1. Instale o pnpm globalmente (se ainda não tiver):
 
    ```bash
    npm i -g pnpm
    ```
 
-2. Suba a infraestrutura com Docker Compose:
+2. Instale as dependências:
 
    ```bash
-   cp .env.example .env
-   cp infra/docker/.env.example infra/docker/.env
+   pnpm install
    ```
+
+3. Suba a infraestrutura com Docker Compose:
 
    ```bash
    cd ./infra/docker
-   ```
-
-   ```bash
    docker compose up -d
    ```
 
-3. Em outro terminal, rode as aplicações em modo desenvolvimento:
+4. Em outro terminal (na raiz do projeto), rode as aplicações em modo desenvolvimento:
 
    ```bash
    pnpm run dev:apps
    ```
+
+### Serviços Disponíveis
+
+Após iniciar, os seguintes serviços estarão disponíveis:
+
+- **Users Server**: http://localhost:2230
+- **Products Catalog Server**: http://localhost:2226
+- **Product Inventory Server**: http://localhost:2227
+- **Orders Server**: http://localhost:2229
+- **Notification Server**: http://localhost:2228
+- **PostgreSQL**: localhost:5432
+- **Kafka**: localhost:9094
+- **Elasticsearch**: http://localhost:9200

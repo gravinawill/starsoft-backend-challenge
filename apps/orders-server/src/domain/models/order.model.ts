@@ -1,8 +1,8 @@
-import { type Customer } from '@models/customer.model'
-import { type GenerateIDError, ID, ModelName } from '@niki/domain'
+import { type GenerateIDError, ID, InvalidOrderStatusError, ModelName } from '@niki/domain'
 import { type Either } from '@niki/utils'
 import { failure, success } from '@niki/utils'
 
+import { type Customer } from './customer.model'
 import { type Product } from './product.model'
 
 export enum OrderStatus {
@@ -82,5 +82,76 @@ export class Order {
     })
 
     return success({ orderCreated: order })
+  }
+
+  public static updateAfterStockAvailable(parameters: { order: { id: ID; totalAmountInCents: number } }): {
+    orderUpdated: Pick<Order, 'id' | 'status' | 'totalAmountInCents' | 'updatedAt'>
+  } {
+    return {
+      orderUpdated: {
+        id: parameters.order.id,
+        totalAmountInCents: parameters.order.totalAmountInCents,
+        updatedAt: new Date(),
+        status: OrderStatus.INVENTORY_CONFIRMED
+      }
+    }
+  }
+
+  public static updateAfterAwaitingPayment(parameters: { order: { id: ID } }): {
+    // eslint-disable-next-line sonarjs/use-type-alias -- TODO: use type alias
+    orderUpdated: Pick<Order, 'id' | 'status' | 'updatedAt'>
+  } {
+    return {
+      orderUpdated: {
+        id: parameters.order.id,
+        updatedAt: new Date(),
+        status: OrderStatus.AWAITING_PAYMENT
+      }
+    }
+  }
+
+  public static updateAfterPaymentDone(parameters: { order: { id: ID } }): {
+    orderUpdated: Pick<Order, 'id' | 'status' | 'updatedAt'>
+  } {
+    return {
+      orderUpdated: {
+        id: parameters.order.id,
+        updatedAt: new Date(),
+        status: OrderStatus.PAYMENT_SUCCEEDED
+      }
+    }
+  }
+
+  public static updateAfterDeliveryCompleted(parameters: { order: { id: ID } }): {
+    orderUpdated: Pick<Order, 'id' | 'status' | 'updatedAt'>
+  } {
+    return {
+      orderUpdated: {
+        id: parameters.order.id,
+        updatedAt: new Date(),
+        status: OrderStatus.DELIVERY_COMPLETED
+      }
+    }
+  }
+
+  public static updateAfterShipmentCreated(parameters: { order: { id: ID } }): {
+    orderUpdated: Pick<Order, 'id' | 'status' | 'updatedAt'>
+  } {
+    return {
+      orderUpdated: {
+        id: parameters.order.id,
+        updatedAt: new Date(),
+        status: OrderStatus.SHIPMENT_CREATED
+      }
+    }
+  }
+
+  public static validateStatus(parameters: {
+    status: string
+  }): Either<InvalidOrderStatusError, { statusValidated: OrderStatus }> {
+    if (!Object.values(OrderStatus).includes(parameters.status as OrderStatus)) {
+      return failure(new InvalidOrderStatusError({ orderStatus: parameters.status }))
+    }
+    return success({ statusValidated: parameters.status as OrderStatus })
   }
 }

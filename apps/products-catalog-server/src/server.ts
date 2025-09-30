@@ -1,3 +1,4 @@
+import { Elasticsearch } from '@elasticsearch/elasticsearch'
 import { serve } from '@hono/node-server'
 import { productsCatalogServerENV } from '@niki/env'
 import { makeLoggerProvider } from '@niki/logger'
@@ -14,6 +15,7 @@ class Server {
       this.logger.sendLogInfo({ message: `Starting server...` })
       const app = buildApp()
       this.server = serve({ fetch: app.fetch, port: productsCatalogServerENV.PRODUCTS_CATALOG_SERVER_PORT })
+      await Elasticsearch.getInstance().healthCheck()
       this.logger.sendLogInfo({
         message: `Server started successfully on port ${productsCatalogServerENV.PRODUCTS_CATALOG_SERVER_PORT}`
       })
@@ -59,6 +61,10 @@ class Server {
         message: `Graceful shutdown initiated...`,
         data: { reason }
       })
+
+      Elasticsearch.getInstance().stopHealthMonitoring()
+      this.logger.sendLogInfo({ message: 'Elasticsearch health monitoring stopped' })
+
       if (this.server) {
         await new Promise<void>((resolve) => {
           this.server!.close(() => {
@@ -67,6 +73,7 @@ class Server {
           })
         })
       }
+
       this.logger.sendLogInfo({ message: 'Graceful shutdown completed successfully' })
       // eslint-disable-next-line unicorn/no-process-exit -- graceful shutdown requires process exit
       process.exit(0)

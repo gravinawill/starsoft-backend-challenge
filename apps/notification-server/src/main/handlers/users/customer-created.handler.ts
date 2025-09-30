@@ -8,7 +8,6 @@ export const handleCustomerCreated: HandlerMessageBroker<UsersCustomerCreatedEve
   try {
     await sendWelcomeCustomerEmail({
       to: { email: parameters.payload.email, name: parameters.payload.name },
-      logger,
       customerID: parameters.payload.userID
     })
   } catch (error) {

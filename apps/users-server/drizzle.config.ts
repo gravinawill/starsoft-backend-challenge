@@ -1,4 +1,4 @@
-import { usersServerENV } from '@niki/env'
+import { usersServerENV } from '@main/users-server.env'
 import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({

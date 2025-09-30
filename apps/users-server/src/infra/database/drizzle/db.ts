@@ -1,4 +1,4 @@
-import { usersServerENV } from '@niki/env'
+import { usersServerENV } from '@main/users-server.env'
 import { drizzle } from 'drizzle-orm/node-postgres'
 
 import * as schema from './schema'

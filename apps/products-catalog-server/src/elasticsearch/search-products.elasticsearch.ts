@@ -1,9 +1,7 @@
-import { Product, SortBySearchProductsEnum, SortOrderSearchProductsEnum } from '@models/product'
-
-import { Client } from '@elastic/elasticsearch'
+import { type Client } from '@elastic/elasticsearch'
 import { type QueryDslQueryContainer, type SortCombinations } from '@elastic/elasticsearch/lib/api/types'
+import { type Product, type SortBySearchProductsEnum, type SortOrderSearchProductsEnum } from '@models/product'
 import { type ILoggerProvider } from '@niki/domain'
-import { productsCatalogServerENV } from '@niki/env'
 import { makeLoggerProvider } from '@niki/logger'
 import { type Either, failure, success } from '@niki/utils'
 
@@ -35,22 +33,12 @@ type ProductElasticsearchSource = {
 }
 
 export class SearchProductsElasticsearch {
-  private readonly client: Client
-  private readonly config: Readonly<{ host: string; indexName: string; requestTimeout: number; maxRetries: number }>
   private readonly logger: ILoggerProvider
 
-  constructor() {
-    this.config = {
-      host: productsCatalogServerENV.ELASTICSEARCH_HOST,
-      indexName: productsCatalogServerENV.ELASTICSEARCH_INDEX_PRODUCTS,
-      requestTimeout: productsCatalogServerENV.ELASTICSEARCH_REQUEST_TIMEOUT,
-      maxRetries: productsCatalogServerENV.ELASTICSEARCH_MAX_RETRIES
-    }
-    this.client = new Client({
-      node: this.config.host,
-      requestTimeout: this.config.requestTimeout,
-      maxRetries: this.config.maxRetries
-    })
+  constructor(
+    private readonly client: Client,
+    private readonly config: Readonly<{ host: string; indexName: string; requestTimeout: number; maxRetries: number }>
+  ) {
     this.logger = makeLoggerProvider()
   }
 
@@ -79,6 +67,7 @@ export class SearchProductsElasticsearch {
 
       return success({ products, totalCount })
     } catch (error) {
+      console.error(error)
       const elasticsearchError = this.handleElasticsearchError(error, params)
       return failure({ error: elasticsearchError })
     }

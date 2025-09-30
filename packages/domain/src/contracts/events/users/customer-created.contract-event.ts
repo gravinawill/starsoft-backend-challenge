@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { type BaseEventContract } from '../_index'
 
-export const CUSTOMER_CREATED_EVENT_CONTRACT_TYPE = 'users.customer.created' as const
+export const CUSTOMER_CREATED_EVENT_CONTRACT_TYPE = 'users.customer-created' as const
 
 export type UsersCustomerCreatedEventPayload = {
   userID: string

@@ -1,11 +1,11 @@
 import { type SwaggerOptions } from '@fastify/swagger'
+import { usersServerENV } from '@main/users-server.env'
 import {
   createJsonSchemaTransform,
   createJsonSchemaTransformObject,
   type ZodOpenApiSchemaMetadata,
   type ZodTypeProvider
 } from '@marcalexiei/fastify-type-provider-zod'
-import { usersServerENV } from '@niki/env'
 import { type FastifyApiReferenceOptions } from '@scalar/fastify-api-reference'
 import {
   type FastifyBaseLogger,
@@ -41,7 +41,7 @@ export const openapiConfig: FastifyRegisterOptions<SwaggerOptions> = {
     servers: [
       {
         url: `http://localhost:${usersServerENV.USERS_SERVER_PORT}`,
-        description: 'Local Development Server'
+        description: 'Docker Development Server'
       },
       ...(usersServerENV.ENVIRONMENT === 'production'
         ? [

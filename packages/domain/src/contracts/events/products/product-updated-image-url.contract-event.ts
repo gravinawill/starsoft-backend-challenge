@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { type BaseEventContract } from '../_index'
 
-export const PRODUCT_UPDATED_IMAGE_URL_EVENT_CONTRACT_TYPE = 'products.updated.image.url' as const
+export const PRODUCT_UPDATED_IMAGE_URL_EVENT_CONTRACT_TYPE = 'products.updated-image-url' as const
 
 export type ProductsProductUpdatedImageURLEventPayload = {
   productID: string

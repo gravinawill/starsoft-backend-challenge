@@ -1,9 +1,10 @@
-import { type ILoggerProvider, ProviderError } from '@niki/domain'
-import { extractErrorMessage, RepositoryError } from '@niki/domain'
-import { productInventoryServerENV } from '@niki/env'
+import { extractErrorData, type ILoggerProvider, ProviderError } from '@niki/domain'
+import { RepositoryError } from '@niki/domain'
+import { productsInventoryServerENV } from '@niki/env'
 import { makeLoggerProvider } from '@niki/logger'
 import { type Either, failure, success } from '@niki/utils'
-import { PrismaClient } from '@prisma/client'
+
+import { PrismaClient } from '../../../generated/prisma'
 
 export class Database {
   private static instance: Database | undefined
@@ -20,7 +21,7 @@ export class Database {
     this.prisma = new PrismaClient({
       errorFormat: 'pretty',
       log: ['error', 'warn', 'info', 'query'],
-      datasourceUrl: productInventoryServerENV.PRODUCT_INVENTORY_SERVER_DATABASE_URL
+      datasourceUrl: productsInventoryServerENV.PRODUCT_INVENTORY_SERVER_DATABASE_URL
     })
   }
 
@@ -46,7 +47,7 @@ export class Database {
         message: 'Successfully connected to database',
         data: {
           connectionTime: this.connectionStartTime.toISOString(),
-          environment: productInventoryServerENV.ENVIRONMENT
+          environment: productsInventoryServerENV.ENVIRONMENT
         }
       })
     } catch (error: unknown) {
@@ -98,7 +99,7 @@ export class Database {
       const uptime = this.connectionStartTime ? Date.now() - this.connectionStartTime.getTime() : undefined
       return success({ connectionStatus: 'connected', uptime, lastError: undefined })
     } catch (error: unknown) {
-      const errorMessage = extractErrorMessage({ error })
+      const errorMessage = extractErrorData({ error })
       this.loggerProvider.sendLogError({
         message: 'Database health check failed',
         value: { error: errorMessage, responseTime: `${Date.now() - startTime}ms` }

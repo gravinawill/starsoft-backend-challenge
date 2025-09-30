@@ -1,5 +1,5 @@
 import { type OpenAPIHono } from '@hono/zod-openapi'
-import { productInventoryServerENV } from '@niki/env'
+import { productsInventoryServerENV } from '@niki/env'
 import { Scalar } from '@scalar/hono-api-reference'
 
 import { version } from '../../../package.json'
@@ -11,7 +11,6 @@ export function routes(app: OpenAPIHono): void {
   healthRoutes(app)
   productsRoutes(app)
 
-  // API documentation
   app.get(
     '/docs',
     Scalar({
@@ -24,10 +23,14 @@ export function routes(app: OpenAPIHono): void {
           { name: 'Products', description: 'Product related endpoints' },
           { name: 'Health', description: 'Health check endpoints' }
         ],
-        info: { title: 'Product Inventory API', version },
+        info: {
+          title: 'Product Inventory API',
+          version,
+          description: 'API for managing product inventory with JWT authentication for employee access'
+        },
         servers: [
           {
-            url: `http://localhost:${productInventoryServerENV.PRODUCT_INVENTORY_SERVER_PORT}`,
+            url: `http://localhost:${productsInventoryServerENV.PRODUCT_INVENTORY_SERVER_PORT}`,
             description: 'Local Development Server'
           }
         ]

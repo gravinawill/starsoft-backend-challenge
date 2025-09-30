@@ -9,7 +9,7 @@
     "db:generate": "pnpm with-env prisma generate",
     "db:migrate": "pnpm with-env prisma migrate dev",
     "db:migrate:prod": "pnpm with-env prisma migrate deploy",
-    "dev": "pnpm with-env tsx watch src/main/server.ts",
+    "dev": "pnpm with-env tsx watch src/server.ts",
     "fix:lint": "eslint --fix .",
     "with-env": "dotenvx run -f ../../.env --"
   },

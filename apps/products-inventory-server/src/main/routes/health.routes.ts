@@ -1,6 +1,6 @@
 import { type OpenAPIHono } from '@hono/zod-openapi'
 import { Database } from '@infra-database/database'
-import { productInventoryServerENV } from '@niki/env'
+import { productsInventoryServerENV } from '@niki/env'
 import { makeLoggerProvider } from '@niki/logger'
 
 import { version } from '../../../package.json'
@@ -14,7 +14,7 @@ export function healthRoutes(app: OpenAPIHono): void {
       const healthStatus = {
         status: isHealthy ? 'healthy' : 'unhealthy',
         timestamp: new Date().toISOString(),
-        environment: productInventoryServerENV.ENVIRONMENT,
+        environment: productsInventoryServerENV.ENVIRONMENT,
         version: version,
         services: {
           database: {
@@ -39,7 +39,7 @@ export function healthRoutes(app: OpenAPIHono): void {
         {
           status: 'unhealthy',
           timestamp: new Date().toISOString(),
-          environment: productInventoryServerENV.ENVIRONMENT,
+          environment: productsInventoryServerENV.ENVIRONMENT,
           version: version,
           error: 'Health check failed'
         },

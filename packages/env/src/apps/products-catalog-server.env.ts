@@ -17,7 +17,7 @@ export const productsCatalogServerENV = createEnv({
       .optional()
       .transform(Number),
     ELASTICSEARCH_HOST: z.url().optional().default('http://localhost:9200'),
-    ELASTICSEARCH_INDEX_PRODUCTS: z.string().optional().default('products.created'),
+    ELASTICSEARCH_INDEX_PRODUCTS: z.string(),
     ELASTICSEARCH_REQUEST_TIMEOUT: z
       .string()
       .transform(Number)

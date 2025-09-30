@@ -5,7 +5,7 @@ import { messageBrokerProviderENV } from '../packages/message-broker-provider.en
 import { tokenProviderENV } from '../packages/token-provider.env'
 import { serverENV } from '../shared/server.env'
 
-export const productInventoryServerENV = createEnv({
+export const productsInventoryServerENV = createEnv({
   extends: [messageBrokerProviderENV, tokenProviderENV, serverENV],
   server: {
     PRODUCT_INVENTORY_SERVER_PORT: z

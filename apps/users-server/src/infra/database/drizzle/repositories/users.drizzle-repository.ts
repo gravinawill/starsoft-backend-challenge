@@ -92,6 +92,7 @@ export class UsersDrizzleRepository implements IValidateEmailUsersRepository, IS
           externalName: 'drizzle'
         }
       })
+      console.error(error)
       this.loggerProvider.sendLogError({
         message: repositoryError.errorMessage,
         value: repositoryError

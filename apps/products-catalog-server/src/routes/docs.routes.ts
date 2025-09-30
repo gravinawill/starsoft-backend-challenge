@@ -15,7 +15,8 @@ export function docsRoutes(app: OpenAPIHono): void {
         openapi: '3.2.0',
         tags: [
           { name: 'Products', description: 'Product related endpoints' },
-          { name: 'Health', description: 'Health check endpoints' }
+          { name: 'Health', description: 'Health check endpoints' },
+          { name: 'Metrics', description: 'System metrics and monitoring endpoints' }
         ],
         info: { title: 'Product Catalog API', version },
         servers: [

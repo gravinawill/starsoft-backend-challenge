@@ -8,7 +8,6 @@ export const handleEmployeeCreated: HandlerMessageBroker<UsersEmployeeCreatedEve
   try {
     await sendWelcomeEmployeeEmail({
       to: { email: parameters.payload.email, name: parameters.payload.name },
-      logger,
       employeeID: parameters.payload.userID
     })
   } catch (error) {

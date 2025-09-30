@@ -3,5 +3,7 @@ export enum ModelName {
   EMPLOYEE = 'employee',
   CUSTOMER = 'customer',
   PRODUCT = 'product',
-  ORDER = 'order'
+  ORDER = 'order',
+  BILLING = 'billing',
+  SHIPMENT = 'shipment'
 }

@@ -2,7 +2,6 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist",
     "paths": {
       "@errors/*": ["./src/domain/errors/*"],
       "@use-cases/*": ["./src/application/use-cases/*"],
@@ -12,9 +11,11 @@
       "@controllers/*": ["./src/main/controllers/*"],
       "@routes/*": ["./src/main/routes/*"],
       "@main/*": ["./src/main/*"]
-    }
+    },
+    "types": ["node"],
+    "outDir": "./dist"
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "dist", "build"],
   "extends": "@niki/typescript-config/base.json",
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "src/domain/models/product.model.ts"]
 }

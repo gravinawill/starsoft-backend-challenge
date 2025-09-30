@@ -16,11 +16,25 @@ export const ordersServerENV = createEnv({
       .refine((val) => Number.isInteger(val) && val > 0, {
         message: 'ORDERS_SERVER_PORT must be a positive integer'
       }),
-    POSTGRESQL_HOST: z.string(),
-    POSTGRESQL_PORT: z.string(),
-    POSTGRESQL_DATABASE_ORDERS_SERVER: z.string(),
-    POSTGRESQL_USERNAME: z.string(),
-    POSTGRESQL_PASSWORD: z.string()
+    ORDERS_SERVER_DATABASE_URL: z.url(),
+    ELASTICSEARCH_HOST: z.url().optional().default('http://localhost:9200'),
+    ELASTICSEARCH_INDEX_ORDERS: z.string().optional().default('orders.created'),
+    ELASTICSEARCH_REQUEST_TIMEOUT: z
+      .string()
+      .optional()
+      .default('30000')
+      .transform(Number)
+      .refine((val) => Number.isInteger(val) && val > 0, {
+        message: 'ELASTICSEARCH_REQUEST_TIMEOUT must be a positive integer'
+      }),
+    ELASTICSEARCH_MAX_RETRIES: z
+      .string()
+      .optional()
+      .default('3')
+      .transform(Number)
+      .refine((val) => Number.isInteger(val) && val >= 0, {
+        message: 'ELASTICSEARCH_MAX_RETRIES must be a non-negative integer'
+      })
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true

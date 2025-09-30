@@ -9,15 +9,7 @@ const logger = makeLoggerProvider()
 async function startApplication(): Promise<void> {
   const startTime = Date.now()
   try {
-    logger.sendLogInfo({
-      message: '🚀 Starting Notification Server',
-      data: {
-        nodeVersion: process.version,
-        environment: process.env.NODE_ENV ?? 'development',
-        pid: process.pid,
-        timestamp: new Date().toISOString()
-      }
-    })
+    logger.sendLogInfo({ message: '🚀 Starting Notification Server' })
     const app = createFastifyApp()
     await setupEvents()
     await app.listen({
@@ -25,13 +17,10 @@ async function startApplication(): Promise<void> {
       port: notificationServerENV.NOTIFICATION_SERVER_PORT
     })
     logger.sendLogInfo({
-      message: '🌐 HTTP API started successfully',
-      data: {
-        port: notificationServerENV.NOTIFICATION_SERVER_PORT,
-        healthCheck: `http://localhost:${notificationServerENV.NOTIFICATION_SERVER_PORT}/health`
-      }
+      message: `🌐 HTTP API started successfully on port ${notificationServerENV.NOTIFICATION_SERVER_PORT}`
     })
   } catch (error) {
+    console.log({ error })
     logger.sendLogError({
       message: '💥 Failed to start notification server',
       value: {
@@ -40,7 +29,6 @@ async function startApplication(): Promise<void> {
         startupTimeMs: Date.now() - startTime
       }
     })
-
     throw new Error('Failed to start notification server')
   }
 }

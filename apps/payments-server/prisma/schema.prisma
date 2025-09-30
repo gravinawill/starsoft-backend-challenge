@@ -1,0 +1,90 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+  output     = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PAYMENTS_SERVER_DATABASE_URL")
+}
+
+enum OrderStatus {
+  CREATED
+  AWAITING_PAYMENT
+  PAYMENT_SUCCEEDED
+  PAYMENT_FAILED
+}
+
+enum PaymentMethod {
+  PIX
+}
+
+enum PaymentGateway {
+  ABACATE_PAY
+}
+
+enum BillingStatus {
+  PENDING
+  EXPIRED
+  CANCELLED
+  PAID
+  REFUNDED
+}
+
+model Customer {
+  name String @map("name") @db.VarChar(255)
+
+  orders   Order[]   @relation(name: "OrderCustomer", map: "order_customer")
+  billings Billing[] @relation(name: "BillingCustomer", map: "billing_customer")
+
+  id        String    @id @unique @map("id") @db.Uuid()
+  createdAt DateTime  @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@index([id])
+  @@map("customers")
+}
+
+model Order {
+  status             OrderStatus   @map("status")
+  paymentMethod      PaymentMethod @map("payment_method")
+  totalAmountInCents Int?          @map("total_amount_in_cents") @db.Integer()
+
+  customerID String   @map("customer_id") @db.Uuid()
+  customer   Customer @relation(fields: [customerID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "OrderCustomer", map: "order_customer")
+
+  billing Billing? @relation(name: "BillingOrder")
+
+  id        String    @id @unique @map("id") @db.Uuid()
+  createdAt DateTime  @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@index([id])
+  @@map("orders")
+}
+
+model Billing {
+  status                  BillingStatus  @map("status")
+  paymentURL              String?        @map("payment_url") @db.Text()
+  amountInCents           Int            @map("amount_in_cents") @db.Integer()
+  paymentMethod           PaymentMethod  @map("payment_method")
+  paymentGateway          PaymentGateway @map("payment_gateway")
+  paymentGatewayBillingID String         @map("payment_gateway_billing_id") @db.Uuid()
+  paymentAt               DateTime?      @map("payment_at") @db.Timestamptz()
+
+  orderID    String   @unique @map("order_id") @db.Uuid()
+  order      Order    @relation(fields: [orderID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "BillingOrder", map: "billing_order")
+  customerID String   @map("customer_id") @db.Uuid()
+  customer   Customer @relation(fields: [customerID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "BillingCustomer", map: "billing_customer")
+
+  id        String    @id @unique @map("id") @db.Uuid()
+  createdAt DateTime  @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  @@index([id])
+  @@map("billings")
+}

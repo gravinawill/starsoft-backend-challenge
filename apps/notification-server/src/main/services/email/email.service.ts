@@ -1,7 +1,10 @@
-import { type ILoggerProvider } from '@niki/domain'
 import { notificationServerENV } from '@niki/env'
+import { makeLoggerProvider } from '@niki/logger'
 import nodemailer, { type Transporter } from 'nodemailer'
 
+import { generateBillingCreatedEmailHTML } from './email-html/billing-created.email-html'
+import { generateOrderCreatedEmailHTML } from './email-html/order-created.email-html'
+import { generatePaymentDoneEmailHTML } from './email-html/payment-done.email-html'
 import { generateWelcomeCustomerEmailHTML } from './email-html/welcome-customer.email-html'
 import { generateWelcomeEmployeeEmailHTML } from './email-html/welcome-employee.email-html'
 
@@ -21,71 +24,123 @@ function getTransporter(): Transporter {
   return transporter
 }
 
-interface EmailRecipient {
+export interface EmailRecipient {
   email: string
   name: string
 }
 
-interface BaseEmailOptions {
+export interface BaseEmailOptions {
   to: EmailRecipient
-  logger: ILoggerProvider
 }
 
-export const sendEmail = async (parameters: {
+type SendEmailParams = {
   to: string
   subject: string
   html: string
-  logger: ILoggerProvider
-}): Promise<void> => {
+}
+
+export const sendEmail = async ({ to, subject, html }: SendEmailParams): Promise<void> => {
+  const logger = makeLoggerProvider()
   try {
     const mailOptions = {
-      from: `${notificationServerENV.NOTIFICATION_SERVER_ETHEREAL_USER} <${notificationServerENV.NOTIFICATION_SERVER_ETHEREAL_USER}>`,
-      to: parameters.to,
-      subject: parameters.subject,
-      html: parameters.html
+      from: `"${notificationServerENV.NOTIFICATION_SERVER_ETHEREAL_USER}" <${notificationServerENV.NOTIFICATION_SERVER_ETHEREAL_USER}>`,
+      to,
+      subject,
+      html
     }
     const result = await getTransporter().sendMail(mailOptions)
-    console.log({ result })
-    parameters.logger.sendLogInfo({
+    logger.sendLogInfo({
       message: '📧 Email sent successfully',
       data: {
         messageId: result.messageId,
-        to: parameters.to,
-        subject: parameters.subject
+        to,
+        subject
       }
     })
   } catch (error) {
-    console.log({ error })
-    parameters.logger.sendLogError({
+    logger.sendLogError({
       message: '❌ Failed to send email',
       value: {
         error: error instanceof Error ? error.message : String(error),
-        to: parameters.to,
-        subject: parameters.subject
+        to,
+        subject
       }
     })
     throw error
   }
 }
 
-export async function sendWelcomeCustomerEmail(parameters: BaseEmailOptions & { customerID: string }): Promise<void> {
-  const subject = `🎉 Welcome to our platform, ${parameters.to.name}!`
-  const html = generateWelcomeCustomerEmailHTML({ customerName: parameters.to.name, customerID: parameters.customerID })
-  await sendEmail({
-    to: parameters.to.email,
-    subject,
-    html,
-    logger: parameters.logger
-  })
+function buildSubject(prefix: string, name: string, fallback = ''): string {
+  return `${prefix} ${fallback || name}!`
 }
 
-export async function sendWelcomeEmployeeEmail(parameters: BaseEmailOptions & { employeeID: string }): Promise<void> {
-  const subject = `👷 Welcome to the team, ${parameters.to.name}!`
-  const html = generateWelcomeEmployeeEmailHTML({ employeeName: parameters.to.name, employeeID: parameters.employeeID })
-  await sendEmail({
-    to: parameters.to.email,
-    subject,
-    html,
-    logger: parameters.logger
+export async function sendWelcomeCustomerEmail(params: BaseEmailOptions & { customerID: string }): Promise<void> {
+  const { to, customerID } = params
+  const subject = buildSubject('🎉 Welcome to our platform,', to.name)
+  const html = generateWelcomeCustomerEmailHTML({ customerName: to.name, customerID })
+  await sendEmail({ to: to.email, subject, html })
+}
+
+export async function sendWelcomeEmployeeEmail(params: BaseEmailOptions & { employeeID: string }): Promise<void> {
+  const { to, employeeID } = params
+  const subject = buildSubject('👷 Welcome to the team,', to.name)
+  const html = generateWelcomeEmployeeEmailHTML({ employeeName: to.name, employeeID })
+  await sendEmail({ to: to.email, subject, html })
+}
+
+export async function sendOrderCreatedEmail(
+  params: BaseEmailOptions & { orderID: string; customerID: string }
+): Promise<void> {
+  const { to, orderID, customerID } = params
+  const subject = buildSubject('🛒 Order Created Successfully,', to.name)
+  const html = generateOrderCreatedEmailHTML({
+    customerName: to.name,
+    customerID,
+    orderID
   })
+  await sendEmail({ to: to.email, subject, html })
+}
+
+export async function sendBillingCreatedEmail(
+  params: BaseEmailOptions & {
+    orderID: string
+    customerID: string
+    paymentURL: string
+    amountInCents: number
+    paymentMethod: string
+  }
+): Promise<void> {
+  const { to, orderID, customerID, paymentURL, amountInCents, paymentMethod } = params
+  const subject = buildSubject('💳 Billing Created Successfully,', to.name)
+  const html = generateBillingCreatedEmailHTML({
+    customerName: to.name,
+    customerID,
+    orderID,
+    paymentURL,
+    amountInCents,
+    paymentMethod
+  })
+  await sendEmail({ to: to.email, subject, html })
+}
+
+export async function sendPaymentDoneEmail(
+  params: BaseEmailOptions & {
+    orderID: string
+    customerID: string
+    amountInCents: number
+    paymentMethod: string
+    paymentAt: string
+  }
+): Promise<void> {
+  const { to, orderID, customerID, amountInCents, paymentMethod, paymentAt } = params
+  const subject = buildSubject('💳 Payment Done Successfully,', to.name)
+  const html = generatePaymentDoneEmailHTML({
+    customerName: to.name,
+    customerID,
+    orderID,
+    amountInCents,
+    paymentMethod,
+    paymentDate: paymentAt
+  })
+  await sendEmail({ to: to.email, subject, html })
 }

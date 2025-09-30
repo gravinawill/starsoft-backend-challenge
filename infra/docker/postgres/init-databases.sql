@@ -1,4 +1,6 @@
 CREATE DATABASE users;
 CREATE DATABASE products_inventory;
 CREATE DATABASE orders;
+CREATE DATABASE payments;
+CREATE DATABASE delivery;
 

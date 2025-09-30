@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@use-cases/*": ["src/app/use-cases/*"],
+      "@errors/*": ["./src/domain/errors/*"],
+      "@models/*": ["./src/domain/models/*"],
+      "@repository-contracts/*": ["./src/domain/repository-contracts/*"],
+      "@providers-contracts/*": ["./src/domain/providers-contracts/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@factories/*": ["./src/main/factories/*"],
+      "@controllers/*": ["./src/main/controllers/*"],
+      "@routes/*": ["./src/main/routes/*"],
+      "@handlers/*": ["./src/main/handlers/*"],
+      "@main/*": ["./src/main/*"]
+    },
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "outDir": "./dist"
+  },
+  "exclude": ["node_modules"],
+  "extends": "@niki/typescript-config/base.json",
+  "include": ["**/*.ts"]
+}

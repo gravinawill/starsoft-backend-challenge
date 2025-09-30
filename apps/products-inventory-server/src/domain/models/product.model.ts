@@ -64,4 +64,16 @@ export class Product {
       })
     })
   }
+
+  public reserve(parameters: { amount: number }): void {
+    this.availableCount = this.availableCount - parameters.amount
+    this.unavailableCount = this.unavailableCount + parameters.amount
+    this.updatedAt = new Date()
+  }
+
+  public unreserve(parameters: { amount: number }): void {
+    this.availableCount = this.availableCount + parameters.amount
+    this.unavailableCount = this.unavailableCount - parameters.amount
+    this.updatedAt = new Date()
+  }
 }

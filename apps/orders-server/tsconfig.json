@@ -3,10 +3,15 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "@use-cases/*": ["src/app/use-cases/*"],
+      "@errors/*": ["./src/domain/errors/*"],
       "@models/*": ["./src/domain/models/*"],
       "@repository-contracts/*": ["./src/domain/repository-contracts/*"],
-      "@use-cases/*": ["./src/use-cases/*"],
-      "@errors/*": ["./src/domain/errors/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@factories/*": ["./src/main/factories/*"],
+      "@controllers/*": ["./src/main/controllers/*"],
+      "@routes/*": ["./src/main/routes/*"],
+      "@handlers/*": ["./src/main/handlers/*"],
       "@main/*": ["./src/main/*"]
     },
     "types": ["node"],
@@ -16,5 +21,5 @@
   },
   "exclude": ["node_modules"],
   "extends": "@niki/typescript-config/base.json",
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "src/app/use-cases/orders/update-order-after-stock-available.use-case.ts"]
 }

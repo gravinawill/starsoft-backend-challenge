@@ -1,10 +1,9 @@
-import { ProductsProductCreatedEventPayload } from '@niki/domain'
-
 import { makeAuthenticateEmployeeUseCase } from '@factories/use-cases/employees/authenticate-employee-use-case.factory'
 import { makeCreateProductUseCase } from '@factories/use-cases/products/create-product-use-case.factory'
 import { type RouteHandler } from '@hono/zod-openapi'
+import { type ProductsProductCreatedEventPayload } from '@niki/domain'
 import { EventContractType } from '@niki/domain'
-import { productInventoryServerENV } from '@niki/env'
+import { productsInventoryServerENV } from '@niki/env'
 import { makeLoggerProvider } from '@niki/logger'
 import { ClientID, makeMessageBrokerProvider } from '@niki/message-broker'
 import { HTTP_STATUS_CODE } from '@niki/utils'
@@ -71,7 +70,7 @@ export const createProductController: RouteHandler<typeof createProductRoute> = 
     }
     const { productCreated } = result.value
     await makeMessageBrokerProvider({
-      brokers: [productInventoryServerENV.MESSAGE_BROKER_PROVIDER_BROKER_URL],
+      brokers: [productsInventoryServerENV.MESSAGE_BROKER_PROVIDER_BROKER_URL],
       clientID: ClientID.PRODUCTS_INVENTORY_SERVER
     }).sendMessage<ProductsProductCreatedEventPayload>({
       eventContractType: EventContractType.PRODUCT_CREATED,

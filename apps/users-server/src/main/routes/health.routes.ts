@@ -1,6 +1,6 @@
 import { type FastifyTypedInstance } from '@main/docs/openapi.docs'
+import { usersServerENV } from '@main/users-server.env'
 import { type ZodTypeProvider } from '@marcalexiei/fastify-type-provider-zod'
-import { usersServerENV } from '@niki/env'
 import { HTTP_STATUS_CODE } from '@niki/utils'
 
 import { version } from '../../../package.json'

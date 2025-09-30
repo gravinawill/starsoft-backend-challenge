@@ -1,6 +1,7 @@
 generator client {
   provider   = "prisma-client-js"
   engineType = "binary"
+  output     = "../generated/prisma"
 }
 
 datasource db {
@@ -32,11 +33,49 @@ model Product {
   createdByEmployeeID String   @map("created_by_employee_id") @db.Uuid()
   createdByEmployee   Employee @relation(fields: [createdByEmployeeID], references: [id], name: "product_created_by_employee", onDelete: Cascade, onUpdate: Cascade)
 
-  id        String    @id @unique @map("id") @db.Uuid()
+  id                      String                    @id @unique @map("id") @db.Uuid()
+  createdAt               DateTime                  @map("created_at") @db.Timestamptz()
+  updatedAt               DateTime                  @map("updated_at") @db.Timestamptz()
+  deletedAt               DateTime?                 @map("deleted_at") @db.Timestamptz()
+  OrderProductReservation OrderProductReservation[] @relation(name: "OrderProductReservationProduct")
+
+  @@index([id])
+  @@map("products")
+}
+
+model Order {
+  id                      String                    @id @unique @map("id") @db.Uuid()
+  createdAt               DateTime                  @map("created_at") @db.Timestamptz()
+  updatedAt               DateTime                  @map("updated_at") @db.Timestamptz()
+  deletedAt               DateTime?                 @map("deleted_at") @db.Timestamptz()
+  OrderProductReservation OrderProductReservation[] @relation(name: "OrderProductReservationOrder")
+
+  @@index([id])
+  @@map("orders")
+}
+
+enum OrderProductReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model OrderProductReservation {
+  quantity            Int                           @map("quantity") @db.Integer()
+  pricePerUnitInCents Int                           @map("price_per_unit_in_cents") @db.Integer()
+  expiresAt           DateTime?                     @map("expires_at") @db.Timestamptz()
+  status              OrderProductReservationStatus @map("status")
+
+  product   Product @relation(fields: [productID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "OrderProductReservationProduct", map: "order_product_reservation_product")
+  productID String  @db.Uuid()
+
+  order   Order  @relation(fields: [orderID], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "OrderProductReservationOrder", map: "order_product_reservation_order")
+  orderID String @db.Uuid()
+
   createdAt DateTime  @map("created_at") @db.Timestamptz()
   updatedAt DateTime  @map("updated_at") @db.Timestamptz()
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
 
-  @@index([id])
-  @@map("products")
+  @@id([productID, orderID])
+  @@map("order_products_reservations")
 }
