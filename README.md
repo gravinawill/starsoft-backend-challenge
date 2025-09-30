@@ -2,7 +2,7 @@
 
 ## Link para o que eu pensei/planejei fazer está no eraser com comentários
 
-[Documentação no Eraser com comentários](https://app.eraser.io/workspace/bq62lo9hU9W9Rk7hD9Ls?origin=share)
+[Link para a documentação no Eraser com comentários](https://app.eraser.io/workspace/bq62lo9hU9W9Rk7hD9Ls?origin=share)
 
 ![O que eu planejei](o-que-eu-planejei-para-fazer.png)
 
