@@ -6,7 +6,7 @@ import {
   type ICreateBillingPaymentGatewayProvider
 } from '@providers-contracts/payment-gateway/create-billing.payment-gateway-provider'
 
-interface AbacatePayProduct {
+type AbacatePayProduct = {
   externalId: string
   name: string
   description: string
@@ -14,14 +14,14 @@ interface AbacatePayProduct {
   price: number
 }
 
-interface AbacatePayCustomer {
+type AbacatePayCustomer = {
   name: string
   cellphone: string
   email: string
   taxId: string
 }
 
-interface AbacatePayBillingRequest {
+type AbacatePayBillingRequest = {
   frequency: 'ONE_TIME'
   methods: string[]
   products: AbacatePayProduct[]
@@ -34,11 +34,13 @@ interface AbacatePayBillingRequest {
   externalId: string
 }
 
-interface AbacatePayBillingResponse {
-  id: string
-  paymentUrl: string
-  status: string
-}
+/*
+ * type AbacatePayBillingResponse = {
+ *   id: string
+ *   paymentUrl: string
+ *   status: string
+ * }
+ */
 
 export class AbacatePayPaymentGatewayProvider implements ICreateBillingPaymentGatewayProvider {
   constructor(
@@ -86,65 +88,89 @@ export class AbacatePayPaymentGatewayProvider implements ICreateBillingPaymentGa
         externalId: parameters.billing.order.id.value
       }
 
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(true)
+        }, 1000)
+      })
+
       this.loggerProvider.sendLogInfo({
         message: '[AbacatePay] Sending request to AbacatePay API',
         data: { abacatePayRequest }
       })
 
-      const response = await fetch(`${this.config.API_URL}/billing/create`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.config.API_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(abacatePayRequest)
-      })
-
-      this.loggerProvider.sendLogInfo({
-        message: '[AbacatePay] Received response from AbacatePay API',
-        data: {
-          status: response.status,
-          statusText: response.statusText
-        }
-      })
-
-      if (!response.ok) {
-        this.loggerProvider.sendLogError({
-          message: '[AbacatePay] AbacatePay API error',
-          value: {
-            status: response.status,
-            statusText: response.statusText
-          }
-        })
-        return failure(
-          new ProviderError({
-            error: new Error(`AbacatePay API error: ${response.status} ${response.statusText}`),
-            provider: {
-              name: 'abacate-pay',
-              method: 'create billing',
-              externalName: 'abacate-pay-api'
-            }
-          })
-        )
-      }
-
-      const data: AbacatePayBillingResponse = await response.json()
-
-      this.loggerProvider.sendLogInfo({
-        message: '[AbacatePay] Billing created successfully',
-        data: {
-          paymentGatewayBillingID: data.id,
-          paymentURL: data.paymentUrl
-        }
-      })
-
       return success({
         billingCreatedByPaymentGateway: {
-          paymentGatewayBillingID: data.id,
+          paymentGatewayBillingID: '123',
           paymentGateway: PaymentGateway.ABACATE_PAY,
-          paymentURL: data.paymentUrl
+          paymentURL: 'https://www.google.com'
         }
       })
+
+      /*
+       * const response = await fetch(`${this.config.API_URL}/billing/create`, {
+       *   method: 'POST',
+       *   headers: {
+       *     Authorization: `Bearer ${this.config.API_TOKEN}`,
+       *     'Content-Type': 'application/json'
+       *   },
+       *   body: JSON.stringify(abacatePayRequest)
+       * })
+       */
+
+      /*
+       * this.loggerProvider.sendLogInfo({
+       *   message: '[AbacatePay] Received response from AbacatePay API',
+       *   data: {
+       *     status: response.status,
+       *     statusText: response.statusText
+       *   }
+       * })
+       */
+
+      /*
+       * if (!response.ok) {
+       *   this.loggerProvider.sendLogError({
+       *     message: '[AbacatePay] AbacatePay API error',
+       *     value: {
+       *       status: response.status,
+       *       statusText: response.statusText
+       *     }
+       *   })
+       *   return failure(
+       *     new ProviderError({
+       *       error: new Error(`AbacatePay API error: ${response.status} ${response.statusText}`),
+       *       provider: {
+       *         name: 'abacate-pay',
+       *         method: 'create billing',
+       *         externalName: 'abacate-pay-api'
+       *       }
+       *     })
+       *   )
+       * }
+       */
+
+      // const data: AbacatePayBillingResponse = await response.json()
+
+      /*
+       * this.loggerProvider.sendLogInfo({
+       *   message: '[AbacatePay] Billing created successfully',
+       *   data: {
+       *     paymentGatewayBillingID: data.id,
+       *     paymentURL: data.paymentUrl
+       *   }
+       * })
+       */
+
+      /*
+       * return success({
+       *   billingCreatedByPaymentGateway: {
+       *     paymentGatewayBillingID: data.id,
+       *     paymentGateway: PaymentGateway.ABACATE_PAY,
+       *     paymentURL: data.paymentUrl
+       *   }
+       * })
+       */
     } catch (error) {
       this.loggerProvider.sendLogError({
         message: '[AbacatePay] Error creating billing',
